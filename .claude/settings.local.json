@@ -16,7 +16,10 @@
       "Bash(powershell -ExecutionPolicy Bypass -File apply-custom-icons.ps1)",
       "Bash(npm install -g vercel)",
       "Bash(git init)",
-      "Bash(git add .)"
+      "Bash(git add .)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nInitial commit: Frontend Tools collection\n\nAdded 12 web-based tools:\n- JPEG Compressor\n- Photo Resizer\n- QR Generator\n- Color Palette from Image\n- Email Extractor\n- Tweet to Image\n- Invoice & Bill Generator\n- Bangla Converter\n- Land Converter\n- MFS Helper\n- Financial Calculators\n\nFeatures:\n- Dark/Light theme support\n- Mobile responsive design\n- Client-side processing (privacy-focused)\n- Custom sun/moon icons\n- Consistent UI across all tools\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git config user.name \"Jahirul Amin Fahim\")",
+      "Bash(git config user.email \"jahirulamin2001@gmail.com\")"
     ],
     "deny": [],
     "ask": []
