@@ -1,0 +1,605 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Palette Generator from Image | Pera nai Vai</title>
+    <meta name="description" content="Extract a beautiful color palette from any image. Upload a photo and get the dominant hex color codes for your design projects.">
+    <link rel="stylesheet" href="tools.css">
+    <style>
+        /* Page-specific styles */
+        .palette-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .upload-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 3rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            background: var(--hover-bg);
+        }
+
+        .upload-area.drag-over {
+            border-color: var(--primary-color);
+            background: var(--hover-bg);
+            transform: scale(1.02);
+        }
+
+        .upload-area.has-image {
+            padding: 1rem;
+            cursor: default;
+        }
+
+        .upload-icon {
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .upload-text {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .image-preview {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .image-preview.active {
+            display: block;
+            margin: 0 auto;
+        }
+
+        .sample-images {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .sample-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .sample-btn:hover {
+            background: var(--hover-bg);
+            border-color: var(--primary-color);
+        }
+
+        .results-section {
+            display: none;
+        }
+
+        .results-section.active {
+            display: block;
+        }
+
+        .palette-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .color-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .color-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .color-preview {
+            height: 120px;
+            position: relative;
+        }
+
+        .color-percentage {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .color-info {
+            padding: 1rem;
+        }
+
+        .color-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .color-values {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .color-value {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+
+        .color-value:hover {
+            background: var(--hover-bg);
+        }
+
+        .value-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .value-text {
+            color: var(--text-primary);
+        }
+
+        .copy-indicator {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+
+        .copy-indicator.show {
+            opacity: 1;
+        }
+
+        .export-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .export-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .export-btn {
+            padding: 0.75rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .export-btn.primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .export-btn.secondary {
+            background: var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .export-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .variations-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        .variations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .variation-swatch {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .variation-swatch:hover {
+            transform: scale(1.1);
+        }
+
+        .variation-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            text-align: center;
+            padding: 0.125rem;
+            font-size: 0.625rem;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .controls-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .control-label {
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .control-input {
+            width: 80px;
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-color);
+            color: var(--text-primary);
+        }
+
+        .extract-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .extract-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .extract-btn:disabled {
+            background: var(--border-color);
+            cursor: not-allowed;
+        }
+
+        canvas {
+            display: none;
+        }
+
+        .harmonies-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .harmony-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .harmony-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .harmony-colors {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .harmony-color-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .harmony-swatch {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .harmony-swatch:hover {
+            transform: scale(1.1);
+            border-color: var(--primary-color);
+        }
+
+        .harmony-hex {
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            background: var(--bg-color);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .harmony-hex:hover {
+            color: var(--primary-color);
+            background: var(--hover-bg);
+        }
+    </style>
+</head>
+<body>
+    <div class="site-container">
+        <!-- Header -->
+        <header class="site-header">
+            <div class="header-content">
+                <a href="index.html" class="logo" style="text-decoration: none; color: inherit;">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
+                    </svg>
+                    <span>Pera nai Vai</span>
+                </a>
+                <div class="header-actions">
+                    <button class="burger-menu" id="burger-menu">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+                        <span>Menu</span>
+                    </button>
+                    <button id="theme-toggle" class="theme-toggle" title="Toggle dark mode">
+                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 512 512" fill="currentColor"><circle cx="256" cy="255.868" r="135"/><path d="m256 0c-8.291 0-15 6.709-15 15v60.868c0 8.291 6.709 15 15 15s15-6.709 15-15v-60.868c0-8.291-6.709-15-15-15zm0 420.868c-8.291 0-15 6.709-15 15v61.132c0 8.291 6.709 15 15 15s15-6.709 15-15v-61.132c0-8.291-6.709-15-15-15zm-165-165c0-8.291-6.709-15-15-15h-61c-8.291 0-15 6.709-15 15s6.709 15 15 15h61c8.291 0 15-6.709 15-15zm406-15h-61c-8.291 0-15 6.709-15 15s6.709 15 15 15h61c8.291 0 15-6.709 15-15s-6.709-15-15-15zm-400.097-165.307c-5.859-5.859-15.352-5.859-21.211 0s-5.859 15.352 0 21.211l42.422 42.422c5.86 5.859 15.352 5.859 21.211 0s5.859-15.352 0-21.211zm296.983 296.982c-5.859-5.859-15.352-5.859-21.211 0s-5.859 15.352 0 21.211l42.422 42.422c5.86 5.859 15.352 5.859 21.211 0s5.859-15.352 0-21.211zm-275.772 0-42.422 42.422c-5.859 5.859-5.859 15.352 0 21.211 5.86 5.859 15.352 5.859 21.211 0l42.422-42.422c5.859-5.859 5.859-15.352 0-21.211s-15.351-5.859-21.211 0zm275.772-233.35 42.422-42.422c5.859-5.859 5.859-15.352 0-21.211s-15.352-5.859-21.211 0l-42.422 42.422c-5.859 5.859-5.859 15.352 0 21.211 5.859 5.86 15.352 5.86 21.211 0z"/></svg>
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 512 512" fill="currentColor" style="display: none;"><path d="m499.277 308.658c-5.687-3.527-13.022-2.86-17.98 1.634-36.074 32.7-82.48 50.708-130.67 50.708-107.523 0-195-87.477-195-195 0-48.189 18.009-94.595 50.708-130.67 4.494-4.958 5.161-12.293 1.634-17.98-3.526-5.687-10.394-8.35-16.832-6.528-105.69 29.911-185.51 127.121-185.51 245.178 0 141.159 114.393 256 255 256 117.121 0 215.005-79.893 245.177-186.51 1.823-6.439-.84-13.306-6.527-16.832zm-238.65 173.342c-124.065 0-225-101.383-225-226 0-83.209 46.524-158.722 117.59-197.495-17.992 32.799-27.59 69.666-27.59 107.495 0 124.065 100.935 225 225 225 37.877 0 74.783-9.619 107.613-27.654-38.809 71.695-114.409 118.654-197.613 118.654zm90-392c24.813 0 45 20.187 45 45 0 8.284 6.716 15 15 15s15-6.716 15-15c0-24.813 20.187-45 45-45 8.284 0 15-6.716 15-15s-6.716-15-15-15c-24.813 0-45-20.187-45-45 0-8.284-6.716-15-15-15s-15 6.716-15 15c0 24.813-20.187 45-45 45-8.284 0-15 6.716-15 15s6.716 15 15 15zm60-30.047c4.279 5.698 9.35 10.768 15.047 15.047-5.698 4.28-10.768 9.349-15.047 15.047-4.279-5.698-9.35-10.768-15.047-15.047 5.698-4.28 10.768-9.349 15.047-15.047zm-150 181.047c24.813 0 45 20.187 45 45 0 8.284 6.716 15 15 15s15-6.716 15-15c0-24.813 20.187-45 45-45 8.284 0 15-6.716 15-15s-6.716-15-15-15c-24.813 0-45-20.187-45-45 0-8.284-6.716-15-15-15s-15 6.716-15 15c0 24.813-20.187 45-45 45-8.284 0-15 6.716-15 15s6.716 15 15 15zm60-30.047c4.279 5.698 9.35 10.768 15.047 15.047-5.698 4.28-10.768 9.35-15.047 15.047-4.279-5.698-9.35-10.768-15.047-15.047 5.698-4.28 10.768-9.35 15.047-15.047z"/></svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Wardrobe Menu -->
+        <div class="wardrobe-overlay" id="wardrobe-overlay">
+            <div class="wardrobe-menu">
+                <button class="wardrobe-close-btn" id="wardrobe-close-btn">&times;</button>
+                <div class="wardrobe-header">
+                    <h2>All Tools</h2>
+                </div>
+                <div class="wardrobe-filters">
+                    <!-- JS will populate this -->
+                </div>
+                <div class="wardrobe-grid" id="wardrobe-grid">
+                    <!-- JS will populate this -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>Color Palette from Image</h1>
+            <p>Extract beautiful color palettes from any image. Perfect for design inspiration and color schemes.</p>
+        </div>
+
+        <!-- Main Content -->
+        <div class="palette-container">
+            <!-- Upload Section -->
+            <div class="upload-section">
+                <h2>Upload Image</h2>
+
+                <div class="upload-area" id="upload-area">
+                    <svg class="upload-icon" width="64" height="64" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14l-7-9 2.25 3 3.25-4L19 17H14z"/>
+                    </svg>
+                    <p class="upload-text">Drag and drop your image here</p>
+                    <button class="sample-btn">Or click to browse files</button>
+                    <input type="file" id="file-input" class="file-input" accept="image/*">
+                    <img id="image-preview" class="image-preview" alt="Uploaded image">
+                </div>
+
+                <div class="sample-images">
+                    <button class="sample-btn" data-sample="sunset">Load Sunset</button>
+                    <button class="sample-btn" data-sample="ocean">Load Ocean</button>
+                    <button class="sample-btn" data-sample="forest">Load Forest</button>
+                    <button class="sample-btn" data-sample="city">Load City</button>
+                </div>
+
+                <div class="controls-row">
+                    <div class="control-group">
+                        <label class="control-label">Number of colors:</label>
+                        <input type="number" id="color-count" class="control-input" min="2" max="12" value="6">
+                    </div>
+                    <button class="extract-btn" id="extract-btn" disabled>Extract Colors</button>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section" id="results-section">
+                <!-- Extracted Palette -->
+                <div class="export-section">
+                    <h2>Extracted Palette</h2>
+                    <div class="palette-grid" id="palette-grid">
+                        <!-- Color cards will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Color Harmonies -->
+                <div class="harmonies-section" id="harmonies-section">
+                    <h2>Color Harmonies</h2>
+                    <div id="harmonies-content">
+                        <!-- Harmony suggestions will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Variations -->
+                <div class="variations-section">
+                    <h2>Color Variations</h2>
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">Click any color above to see its variations</p>
+                    <div class="variations-grid" id="variations-grid">
+                        <!-- Variations will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Export Options -->
+                <div class="export-section">
+                    <h2>Export Palette</h2>
+                    <div class="export-options">
+                        <button class="export-btn primary" id="copy-css-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                            </svg>
+                            Copy as CSS
+                        </button>
+                        <button class="export-btn secondary" id="copy-hex-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                            </svg>
+                            Copy HEX Values
+                        </button>
+                        <button class="export-btn secondary" id="download-json-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                            </svg>
+                            Download JSON
+                        </button>
+                        <button class="export-btn secondary" id="download-scss-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                            </svg>
+                            Download SCSS
+                        </button>
+                        <button class="export-btn secondary" id="download-ase-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                            </svg>
+                            Download ASE
+                        </button>
+                        <button class="export-btn secondary" id="save-image-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                            </svg>
+                            Save as Image
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Copy Indicator -->
+        <div class="copy-indicator" id="copy-indicator">Copied to clipboard!</div>
+
+        <!-- Hidden Canvas for Image Processing -->
+        <canvas id="canvas"></canvas>
+
+        <!-- Features Section -->
+        <section class="features-section">
+            <h2>Features</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8z"/>
+                    </svg>
+                    <h3>Smart Extraction</h3>
+                    <p>Advanced algorithm to extract dominant colors from any image.</p>
+                </div>
+                <div class="feature">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                    <h3>Color Harmonies</h3>
+                    <p>Generate complementary, triadic, and analogous color schemes.</p>
+                </div>
+                <div class="feature">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/>
+                    </svg>
+                    <h3>Multiple Formats</h3>
+                    <p>Export as CSS, JSON, SCSS, or Adobe Swatch Exchange files.</p>
+                </div>
+                <div class="feature">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                    <h3>Instant Results</h3>
+                    <p>Fast client-side processing with real-time color extraction.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="site-footer">
+            <div class="footer-content">
+                <a href="https://github.com" target="_blank" style="color: var(--text-secondary); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.207 11.387.6.11.82-.26.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.085 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.93 0-1.31.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.217.694.824.576C20.565 21.795 24 17.297 24 12 24 5.37 18.627 0 12 0z"/></svg>
+                    <span>View on GitHub</span>
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="color-palette.js"></script>
+    <script src="theme.js" defer></script>
+    <script src="wardrobe-menu.js" defer></script>
+</body>
+</html>

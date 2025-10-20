@@ -1,0 +1,162 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo & Signature Resizer for Bangladesh | Pera nai Vai</title>
+    <meta name="description" content="Easily resize and compress photos and signatures for Bangladeshi passport, NID, visa, university admissions (DU, NU), and government job applications (Teletalk).">
+    <link rel="stylesheet" href="tools.css">
+    <style>
+        .resizer-container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
+        .tool-section { background: var(--card-bg); border-radius: 12px; padding: 2rem; box-shadow: var(--shadow); }
+        .tabs { display: flex; border-bottom: 1px solid var(--border-color); margin-bottom: 2rem; }
+        .tab-button { background: transparent; border: none; padding: 1rem 1.5rem; font-size: 1rem; font-weight: 600; cursor: pointer; color: var(--text-secondary); border-bottom: 3px solid transparent; transition: all 0.3s ease; }
+        .tab-button.active { color: var(--primary-color); border-bottom-color: var(--primary-color); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .upload-area { border: 2px dashed var(--border-color); border-radius: 12px; padding: 3rem; text-align: center; cursor: pointer; transition: all 0.3s ease; margin-bottom: 2rem; }
+        .upload-area:hover { border-color: var(--primary-color); background: var(--hover-bg); }
+        .upload-area.hidden { display: none; }
+        .processing-grid { display: none; grid-template-columns: 1fr 1fr; gap: 2rem; }
+        .processing-grid.active { display: grid; }
+        .controls-col, .preview-col { display: flex; flex-direction: column; gap: 1.5rem; }
+        .preset-group label, .quality-group label { display: block; font-weight: 500; margin-bottom: 0.5rem; }
+        .preset-select, .quality-slider { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem; }
+        .quality-slider { padding: 0; }
+        .preview-box { border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; text-align: center; }
+        .preview-box h3 { font-size: 1rem; margin-bottom: 0.5rem; color: var(--text-secondary); }
+        .preview-image { max-width: 100%; max-height: 300px; object-fit: contain; border: 1px solid var(--border-color); background-color: #fff; }
+        .preview-info { margin-top: 0.5rem; font-size: 0.875rem; }
+        .action-btn { padding: 1rem; font-size: 1.125rem; font-weight: 700; background: var(--primary-color); color: white; border: none; border-radius: 8px; cursor: pointer; transition: background 0.3s ease; }
+        .action-btn.secondary { background: var(--hover-bg); color: var(--text-primary); border: 1px solid var(--border-color); }
+        @media (max-width: 768px) { .processing-grid.active { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="site-container">
+        <header class="site-header">
+             <div class="header-content">
+                <a href="index.html" class="logo" style="text-decoration: none; color: inherit;">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>
+                    <span>Pera nai Vai</span>
+                </a>
+                <nav class="main-nav">
+                    <!-- This will be replaced by the burger menu -->
+                </nav>
+                <div class="header-actions">
+                    <button class="burger-menu" id="burger-menu">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+                        <span>Menu</span>
+                    </button>
+                    <button id="theme-toggle" class="theme-toggle" title="Toggle dark mode">
+                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 512 512" fill="currentColor"><circle cx="256" cy="255.868" r="135"/><path d="m256 0c-8.291 0-15 6.709-15 15v60.868c0 8.291 6.709 15 15 15s15-6.709 15-15v-60.868c0-8.291-6.709-15-15-15zm0 420.868c-8.291 0-15 6.709-15 15v61.132c0 8.291 6.709 15 15 15s15-6.709 15-15v-61.132c0-8.291-6.709-15-15-15zm-165-165c0-8.291-6.709-15-15-15h-61c-8.291 0-15 6.709-15 15s6.709 15 15 15h61c8.291 0 15-6.709 15-15zm406-15h-61c-8.291 0-15 6.709-15 15s6.709 15 15 15h61c8.291 0 15-6.709 15-15s-6.709-15-15-15zm-400.097-165.307c-5.859-5.859-15.352-5.859-21.211 0s-5.859 15.352 0 21.211l42.422 42.422c5.86 5.859 15.352 5.859 21.211 0s5.859-15.352 0-21.211zm296.983 296.982c-5.859-5.859-15.352-5.859-21.211 0s-5.859 15.352 0 21.211l42.422 42.422c5.86 5.859 15.352 5.859 21.211 0s5.859-15.352 0-21.211zm-275.772 0-42.422 42.422c-5.859 5.859-5.859 15.352 0 21.211 5.86 5.859 15.352 5.859 21.211 0l42.422-42.422c5.859-5.859 5.859-15.352 0-21.211s-15.351-5.859-21.211 0zm275.772-233.35 42.422-42.422c5.859-5.859 5.859-15.352 0-21.211s-15.352-5.859-21.211 0l-42.422 42.422c-5.859 5.859-5.859 15.352 0 21.211 5.859 5.86 15.352 5.86 21.211 0z"/></svg>
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 512 512" fill="currentColor" style="display: none;"><path d="m499.277 308.658c-5.687-3.527-13.022-2.86-17.98 1.634-36.074 32.7-82.48 50.708-130.67 50.708-107.523 0-195-87.477-195-195 0-48.189 18.009-94.595 50.708-130.67 4.494-4.958 5.161-12.293 1.634-17.98-3.526-5.687-10.394-8.35-16.832-6.528-105.69 29.911-185.51 127.121-185.51 245.178 0 141.159 114.393 256 255 256 117.121 0 215.005-79.893 245.177-186.51 1.823-6.439-.84-13.306-6.527-16.832zm-238.65 173.342c-124.065 0-225-101.383-225-226 0-83.209 46.524-158.722 117.59-197.495-17.992 32.799-27.59 69.666-27.59 107.495 0 124.065 100.935 225 225 225 37.877 0 74.783-9.619 107.613-27.654-38.809 71.695-114.409 118.654-197.613 118.654zm90-392c24.813 0 45 20.187 45 45 0 8.284 6.716 15 15 15s15-6.716 15-15c0-24.813 20.187-45 45-45 8.284 0 15-6.716 15-15s-6.716-15-15-15c-24.813 0-45-20.187-45-45 0-8.284-6.716-15-15-15s-15 6.716-15 15c0 24.813-20.187 45-45 45-8.284 0-15 6.716-15 15s6.716 15 15 15zm60-30.047c4.279 5.698 9.35 10.768 15.047 15.047-5.698 4.28-10.768 9.349-15.047 15.047-4.279-5.698-9.35-10.768-15.047-15.047 5.698-4.28 10.768-9.349 15.047-15.047zm-150 181.047c24.813 0 45 20.187 45 45 0 8.284 6.716 15 15 15s15-6.716 15-15c0-24.813 20.187-45 45-45 8.284 0 15-6.716 15-15s-6.716-15-15-15c-24.813 0-45-20.187-45-45 0-8.284-6.716-15-15-15s-15 6.716-15 15c0 24.813-20.187 45-45 45-8.284 0-15 6.716-15 15s6.716 15 15 15zm60-30.047c4.279 5.698 9.35 10.768 15.047 15.047-5.698 4.28-10.768 9.35-15.047 15.047-4.279-5.698-9.35-10.768-15.047-15.047 5.698-4.28 10.768-9.35 15.047-15.047z"/></svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Wardrobe Menu -->
+        <div class="wardrobe-overlay" id="wardrobe-overlay">
+            <div class="wardrobe-menu">
+                <button class="wardrobe-close-btn" id="wardrobe-close-btn">&times;</button>
+                <div class="wardrobe-header">
+                    <h2>All Tools</h2>
+                </div>
+                <div class="wardrobe-filters">
+                    <!-- JS will populate this -->
+                </div>
+                <div class="wardrobe-grid" id="wardrobe-grid">
+                    <!-- JS will populate this -->
+                </div>
+            </div>
+        </div>
+
+        <div class="page-header">
+            <h1>Photo & Signature Resizer</h1>
+            <p>Resize images for Passport, NID, Visa, and Job Applications in Bangladesh.</p>
+        </div>
+
+        <main class="resizer-container">
+            <div class="tool-section">
+                <div class="tabs">
+                    <button class="tab-button active" data-tab="photo-tab">Photo Resizer</button>
+                    <button class="tab-button" data-tab="signature-tab">Signature Resizer</button>
+                </div>
+
+                <div id="photo-tab" class="tab-content active">
+                    <div id="photo-upload-area" class="upload-area">
+                        <h3>Upload Your Photo</h3>
+                        <p>Click here to select an image file</p>
+                        <input type="file" id="photo-input" accept="image/*" style="display: none;">
+                    </div>
+                    <div id="photo-processing-grid" class="processing-grid">
+                        <div class="controls-col">
+                            <div class="preset-group">
+                                <label for="photo-preset-select">Choose a Preset:</label>
+                                <select id="photo-preset-select" class="preset-select">
+                                    <option value="custom">Custom Size</option>
+                                    <option value="passport">Passport (Regular)</option>
+                                    <option value="epassport">E-Passport</option>
+                                    <option value="nid">NID Card</option>
+                                    <option value="visa">Visa</option>
+                                    <option value="govtjob">Govt Job (Teletalk)</option>
+                                    <option value="du">DU Admission</option>
+                                    <option value="nu">NU Degree</option>
+                                    <option value="bou">BOU/General</option>
+                                </select>
+                            </div>
+                            <div class="quality-group">
+                                <label for="photo-quality-slider">Compression Quality:</label>
+                                <input type="range" id="photo-quality-slider" class="quality-slider" min="0.1" max="1.0" value="0.9" step="0.05">
+                            </div>
+                            <button id="photo-download-btn" class="action-btn">Download Photo</button>
+                            <button id="photo-reset-btn" class="action-btn secondary">Upload New</button>
+                        </div>
+                        <div class="preview-col">
+                            <div class="preview-box"><h3>Original</h3><img id="photo-original-preview" class="preview-image" alt="Original photo preview"><div id="photo-original-info" class="preview-info"></div></div>
+                            <div class="preview-box"><h3>Resized Preview</h3><canvas id="photo-output-canvas" class="preview-image"></canvas><div id="photo-output-info" class="preview-info"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="signature-tab" class="tab-content">
+                     <div id="signature-upload-area" class="upload-area">
+                        <h3>Upload Your Signature</h3>
+                        <p>Click here to select an image file</p>
+                        <input type="file" id="signature-input" accept="image/*" style="display: none;">
+                    </div>
+                    <div id="signature-processing-grid" class="processing-grid">
+                        <div class="controls-col">
+                            <p class="hint">Govt. job applications require a signature of 300x80 pixels and under 60KB.</p>
+                             <div class="quality-group">
+                                <label for="signature-quality-slider">Compression Quality:</label>
+                                <input type="range" id="signature-quality-slider" class="quality-slider" min="0.1" max="1.0" value="0.8" step="0.05">
+                            </div>
+                            <button id="signature-download-btn" class="action-btn">Download Signature</button>
+                            <button id="signature-reset-btn" class="action-btn secondary">Upload New</button>
+                        </div>
+                        <div class="preview-col">
+                             <div class="preview-box"><h3>Original</h3><img id="signature-original-preview" class="preview-image" alt="Original signature preview"><div id="signature-original-info" class="preview-info"></div></div>
+                            <div class="preview-box"><h3>Resized Preview (300x80)</h3><canvas id="signature-output-canvas" class="preview-image"></canvas><div id="signature-output-info" class="preview-info"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="site-footer">
+            <div class="footer-content">
+                 <a href="https://github.com" target="_blank" style="color: var(--text-secondary); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.207 11.387.6.11.82-.26.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.085 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.93 0-1.31.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.217.694.824.576C20.565 21.795 24 17.297 24 12 24 5.37 18.627 0 12 0z"/></svg>
+                    <span>View on GitHub</span>
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="photo-resizer.js"></script>
+    <script src="theme.js" defer></script>
+    <script src="wardrobe-menu.js" defer></script>
+</body>
+</html>

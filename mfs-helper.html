@@ -1,0 +1,296 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bKash, Nagad, Rocket Fee Calculator | MFS Helper | Pera nai Vai</title>
+    <meta name="description" content="The best MFS fee calculator for Bangladesh. Instantly calculate and compare cash out & send money charges for bKash, Nagad, and Rocket. Find the cheapest option.">
+    <link rel="stylesheet" href="tools.css">
+    <style>
+        .helper-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .tool-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        /* Smart Calculator Styles */
+        .calculator-controls {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .amount-input {
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .calc-mode-toggle {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .calc-mode-toggle label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .transaction-type h3 {
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .result-card {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .result-card.cheapest {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 10px var(--success-bg);
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-details span {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .result-details .final-amount {
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 1.125rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Comparison Table Styles */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th, .comparison-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .comparison-table th {
+            background: var(--hover-bg);
+        }
+
+        /* FAQ Styles */
+        .faq-item {
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+        }
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+        .faq-question {
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+        }
+        .faq-answer {
+            margin-top: 1rem;
+            color: var(--text-secondary);
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="site-container">
+        <!-- Header -->
+        <header class="site-header">
+            <div class="header-content">
+                <a href="index.html" class="logo" style="text-decoration: none; color: inherit;">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>
+                    <span>Pera nai Vai</span>
+                </a>
+                <nav class="main-nav">
+                    <!-- This will be replaced by the burger menu -->
+                </nav>
+                <div class="header-actions">
+                    <button class="burger-menu" id="burger-menu">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+                        <span>Menu</span>
+                    </button>
+                    <button id="theme-toggle" class="theme-toggle" title="Toggle dark mode">
+                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 512 512" fill="currentColor"><circle cx="256" cy="255.868" r="135"/><path d="m256 0c-8.291 0-15 6.709-15 15v60.868c0 8.291 6.709 15 15 15s15-6.709 15-15v-60.868c0-8.291-6.709-15-15-15zm0 420.868c-8.291 0-15 6.709-15 15v61.132c0 8.291 6.709 15 15 15s15-6.709 15-15v-61.132c0-8.291-6.709-15-15-15zm-165-165c0-8.291-6.709-15-15-15h-61c-8.291 0-15 6.709-15 15s6.709 15 15 15h61c8.291 0 15-6.709 15-15zm406-15h-61c-8.291 0-15 6.709-15 15s6.709 15 15 15h61c8.291 0 15-6.709 15-15s-6.709-15-15-15zm-400.097-165.307c-5.859-5.859-15.352-5.859-21.211 0s-5.859 15.352 0 21.211l42.422 42.422c5.86 5.859 15.352 5.859 21.211 0s5.859-15.352 0-21.211zm296.983 296.982c-5.859-5.859-15.352-5.859-21.211 0s-5.859 15.352 0 21.211l42.422 42.422c5.86 5.859 15.352 5.859 21.211 0s5.859-15.352 0-21.211zm-275.772 0-42.422 42.422c-5.859 5.859-5.859 15.352 0 21.211 5.86 5.859 15.352 5.859 21.211 0l42.422-42.422c5.859-5.859 5.859-15.352 0-21.211s-15.351-5.859-21.211 0zm275.772-233.35 42.422-42.422c5.859-5.859 5.859-15.352 0-21.211s-15.352-5.859-21.211 0l-42.422 42.422c-5.859 5.859-5.859 15.352 0 21.211 5.859 5.86 15.352 5.86 21.211 0z"/></svg>
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 512 512" fill="currentColor" style="display: none;"><path d="m499.277 308.658c-5.687-3.527-13.022-2.86-17.98 1.634-36.074 32.7-82.48 50.708-130.67 50.708-107.523 0-195-87.477-195-195 0-48.189 18.009-94.595 50.708-130.67 4.494-4.958 5.161-12.293 1.634-17.98-3.526-5.687-10.394-8.35-16.832-6.528-105.69 29.911-185.51 127.121-185.51 245.178 0 141.159 114.393 256 255 256 117.121 0 215.005-79.893 245.177-186.51 1.823-6.439-.84-13.306-6.527-16.832zm-238.65 173.342c-124.065 0-225-101.383-225-226 0-83.209 46.524-158.722 117.59-197.495-17.992 32.799-27.59 69.666-27.59 107.495 0 124.065 100.935 225 225 225 37.877 0 74.783-9.619 107.613-27.654-38.809 71.695-114.409 118.654-197.613 118.654zm90-392c24.813 0 45 20.187 45 45 0 8.284 6.716 15 15 15s15-6.716 15-15c0-24.813 20.187-45 45-45 8.284 0 15-6.716 15-15s-6.716-15-15-15c-24.813 0-45-20.187-45-45 0-8.284-6.716-15-15-15s-15 6.716-15 15c0 24.813-20.187 45-45 45-8.284 0-15 6.716-15 15s6.716 15 15 15zm60-30.047c4.279 5.698 9.35 10.768 15.047 15.047-5.698 4.28-10.768 9.349-15.047 15.047-4.279-5.698-9.35-10.768-15.047-15.047 5.698-4.28 10.768-9.349 15.047-15.047zm-150 181.047c24.813 0 45 20.187 45 45 0 8.284 6.716 15 15 15s15-6.716 15-15c0-24.813 20.187-45 45-45 8.284 0 15-6.716 15-15s-6.716-15-15-15c-24.813 0-45-20.187-45-45 0-8.284-6.716-15-15-15s-15 6.716-15 15c0 24.813-20.187 45-45 45-8.284 0-15 6.716-15 15s6.716 15 15 15zm60-30.047c4.279 5.698 9.35 10.768 15.047 15.047-5.698 4.28-10.768 9.35-15.047 15.047-4.279-5.698-9.35-10.768-15.047-15.047 5.698-4.28 10.768-9.35 15.047-15.047z"/></svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Wardrobe Menu -->
+        <div class="wardrobe-overlay" id="wardrobe-overlay">
+            <div class="wardrobe-menu">
+                <button class="wardrobe-close-btn" id="wardrobe-close-btn">&times;</button>
+                <div class="wardrobe-header">
+                    <h2>All Tools</h2>
+                </div>
+                <div class="wardrobe-filters">
+                    <!-- JS will populate this -->
+                </div>
+                <div class="wardrobe-grid" id="wardrobe-grid">
+                    <!-- JS will populate this -->
+                </div>
+            </div>
+        </div>
+
+        <div class="page-header">
+            <h1>MFS Helper</h1>
+            <p>Fee Calculator, Comparison, and Guide for bKash, Nagad, & Rocket.</p>
+        </div>
+
+        <main class="helper-container">
+            <!-- Smart Calculator -->
+            <section class="tool-section">
+                <h2>Smart Fee Calculator</h2>
+                <div class="calculator-controls">
+                    <input type="number" id="amount-input" class="amount-input" placeholder="Enter Amount (Taka)">
+                    <div class="calc-mode-toggle">
+                        <label><input type="radio" name="calc-mode" value="send" checked> You Send</label>
+                        <label><input type="radio" name="calc-mode" value="receive"> They Receive</label>
+                    </div>
+                </div>
+                <div class="results-grid">
+                    <div class="transaction-type" id="cash-out-results">
+                        <h3>Cash Out (from Agent)</h3>
+                        <!-- JS will populate this -->
+                    </div>
+                    <div class="transaction-type" id="send-money-results">
+                        <h3>Send Money</h3>
+                        <!-- JS will populate this -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Comparison Table -->
+            <section class="tool-section">
+                <h2>Quick Comparison Table</h2>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th>Cash Out (Agent)</th>
+                            <th>Send Money</th>
+                            <th>Mobile Recharge</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>bKash</td>
+                            <td>1.85%</td>
+                            <td>5 Taka*</td>
+                            <td>Free</td>
+                        </tr>
+                        <tr>
+                            <td>Nagad</td>
+                            <td>1.25% (App)</td>
+                            <td>Free</td>
+                            <td>Free</td>
+                        </tr>
+                        <tr>
+                            <td>Rocket</td>
+                            <td>1.80%</td>
+                            <td>Free</td>
+                            <td>Free</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 1rem;">*bKash Send Money is often free to Priyo numbers. See FAQ.</p>
+            </section>
+
+            <!-- FAQ Section -->
+            <section class="tool-section">
+                <h2>Common Questions (FAQ)</h2>
+                <div id="faq-container">
+                    <div class="faq-item">
+                        <div class="faq-question">Can I send money between different services (e.g., bKash to Nagad)? <span>+</span></div>
+                        <div class="faq-answer">
+                            <p>Yes, this is now possible using the 'Binimoy' service, which you can find inside the bKash and Nagad apps. It allows you to transfer money between different MFS providers and banks. Be aware that Binimoy has its own fee structure, typically around 1% of the transaction amount, which is different from a regular 'Send Money' fee.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">Who pays the fee when I 'Send Money'? <span>+</span></div>
+                        <div class="faq-answer">
+                            <p>The SENDER always pays the fee. If a 5 Taka fee applies for sending money, it will be deducted from the sender's account. The receiver gets the full amount that was sent.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">What are the daily limits? <span>+</span></div>
+                        <div class="faq-answer">
+                            <p>As of March 2025, the unified limits set by Bangladesh Bank for most standard accounts are:</p>
+                            <ul>
+                                <li><b>Cash Out (from Agent):</b> 30,000 Taka per day / 200,000 Taka per month.</li>
+                                <li><b>Send Money (P2P):</b> 50,000 Taka per day / 300,000 Taka per month.</li>
+                            </ul>
+                            <p>These limits apply across all major MFS providers (bKash, Nagad, Rocket).</p>
+                        </div>
+                    </div>
+                     <div class="faq-item">
+                        <div class="faq-question">Is bKash 'Send Money' always 5 Taka? <span>+</span></div>
+                        <div class="faq-answer">
+                            <p>No. bKash has a 'Priyo Number' feature. Sending money to up to 5 designated Priyo numbers is FREE for the first 25,000 Taka each month. The 5 Taka fee applies when sending to numbers that are not on your Priyo list. For simplicity, this calculator assumes the 5 Taka fee applies, but you can save money by using the Priyo feature!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="site-footer">
+            <div class="footer-content">
+                <a href="https://github.com" target="_blank" style="color: var(--text-secondary); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.207 11.387.6.11.82-.26.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.085 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.93 0-1.31.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.217.694.824.576C20.565 21.795 24 17.297 24 12 24 5.37 18.627 0 12 0z"/></svg>
+                    <span>View on GitHub</span>
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="mfs-helper.js"></script>
+    <script src="theme.js" defer></script>
+    <script src="wardrobe-menu.js" defer></script>
+</body>
+</html>

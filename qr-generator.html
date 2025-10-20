@@ -1,0 +1,561 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free QR Code Generator | Pera nai Vai</title>
+    <meta name="description" content="Create custom QR codes online for free. Generate QR codes for URLs, text, WiFi, email, and more. Customize colors and download as PNG or SVG.">
+    <link rel="stylesheet" href="tools.css">
+    <style>
+        /* Page-specific styles */
+        .qr-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .qr-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .input-panel {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        .output-panel {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .input-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tab-button {
+            background: transparent;
+            border: none;
+            padding: 0.75rem 1rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab-button:hover {
+            color: var(--text-primary);
+        }
+
+        .tab-button.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            background: var(--bg-color);
+            color: var(--text-primary);
+            transition: border-color 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        textarea.input-field {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .input-helper {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .qr-options {
+            background: var(--bg-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .options-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .color-input-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .color-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .color-input {
+            width: 50px;
+            height: 40px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .size-slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: var(--border-color);
+            outline: none;
+            -webkit-appearance: none;
+            margin: 1rem 0;
+        }
+
+        .size-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+        }
+
+        .size-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            border: none;
+        }
+
+        .size-display {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 1.5rem;
+        }
+
+        .generate-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .qr-display {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .qr-canvas {
+            display: block;
+            margin: 0 auto;
+        }
+
+        .qr-placeholder {
+            width: 300px;
+            height: 300px;
+            background: var(--bg-color);
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+        }
+
+        .qr-placeholder svg {
+            opacity: 0.3;
+            margin-bottom: 1rem;
+        }
+
+        .download-options {
+            display: flex;
+            gap: 1rem;
+            width: 100%;
+        }
+
+        .download-btn {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .download-btn.primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .download-btn.secondary {
+            background: var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .error-correction-group {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+
+        .error-level-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .error-level-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .wifi-security-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-color);
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="site-container">
+        <!-- Header -->
+        <header class="site-header">
+            <div class="header-content">
+                <a href="index.html" class="logo" style="text-decoration: none; color: inherit;">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
+                    </svg>
+                    <span>Pera nai Vai</span>
+                </a>
+                <nav class="main-nav">
+                    <!-- This will be replaced by the burger menu -->
+                </nav>
+                <div class="header-actions">
+                    <button class="burger-menu" id="burger-menu">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+                        <span>Menu</span>
+                    </button>
+                    <button id="theme-toggle" class="theme-toggle" title="Toggle dark mode">
+                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 512 512" fill="currentColor"><circle cx="256" cy="255.868" r="135"/><path d="m256 0c-8.291 0-15 6.709-15 15v60.868c0 8.291 6.709 15 15 15s15-6.709 15-15v-60.868c0-8.291-6.709-15-15-15zm0 420.868c-8.291 0-15 6.709-15 15v61.132c0 8.291 6.709 15 15 15s15-6.709 15-15v-61.132c0-8.291-6.709-15-15-15zm-165-165c0-8.291-6.709-15-15-15h-61c-8.291 0-15 6.709-15 15s6.709 15 15 15h61c8.291 0 15-6.709 15-15zm406-15h-61c-8.291 0-15 6.709-15 15s6.709 15 15 15h61c8.291 0 15-6.709 15-15s-6.709-15-15-15zm-400.097-165.307c-5.859-5.859-15.352-5.859-21.211 0s-5.859 15.352 0 21.211l42.422 42.422c5.86 5.859 15.352 5.859 21.211 0s5.859-15.352 0-21.211zm296.983 296.982c-5.859-5.859-15.352-5.859-21.211 0s-5.859 15.352 0 21.211l42.422 42.422c5.86 5.859 15.352 5.859 21.211 0s5.859-15.352 0-21.211zm-275.772 0-42.422 42.422c-5.859 5.859-5.859 15.352 0 21.211 5.86 5.859 15.352 5.859 21.211 0l42.422-42.422c5.859-5.859 5.859-15.352 0-21.211s-15.351-5.859-21.211 0zm275.772-233.35 42.422-42.422c5.859-5.859 5.859-15.352 0-21.211s-15.352-5.859-21.211 0l-42.422 42.422c-5.859 5.859-5.859 15.352 0 21.211 5.859 5.86 15.352 5.86 21.211 0z"/></svg>
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 512 512" fill="currentColor" style="display: none;"><path d="m499.277 308.658c-5.687-3.527-13.022-2.86-17.98 1.634-36.074 32.7-82.48 50.708-130.67 50.708-107.523 0-195-87.477-195-195 0-48.189 18.009-94.595 50.708-130.67 4.494-4.958 5.161-12.293 1.634-17.98-3.526-5.687-10.394-8.35-16.832-6.528-105.69 29.911-185.51 127.121-185.51 245.178 0 141.159 114.393 256 255 256 117.121 0 215.005-79.893 245.177-186.51 1.823-6.439-.84-13.306-6.527-16.832zm-238.65 173.342c-124.065 0-225-101.383-225-226 0-83.209 46.524-158.722 117.59-197.495-17.992 32.799-27.59 69.666-27.59 107.495 0 124.065 100.935 225 225 225 37.877 0 74.783-9.619 107.613-27.654-38.809 71.695-114.409 118.654-197.613 118.654zm90-392c24.813 0 45 20.187 45 45 0 8.284 6.716 15 15 15s15-6.716 15-15c0-24.813 20.187-45 45-45 8.284 0 15-6.716 15-15s-6.716-15-15-15c-24.813 0-45-20.187-45-45 0-8.284-6.716-15-15-15s-15 6.716-15 15c0 24.813-20.187 45-45 45-8.284 0-15 6.716-15 15s6.716 15 15 15zm60-30.047c4.279 5.698 9.35 10.768 15.047 15.047-5.698 4.28-10.768 9.349-15.047 15.047-4.279-5.698-9.35-10.768-15.047-15.047 5.698-4.28 10.768-9.349 15.047-15.047zm-150 181.047c24.813 0 45 20.187 45 45 0 8.284 6.716 15 15 15s15-6.716 15-15c0-24.813 20.187-45 45-45 8.284 0 15-6.716 15-15s-6.716-15-15-15c-24.813 0-45-20.187-45-45 0-8.284-6.716-15-15-15s-15 6.716-15 15c0 24.813-20.187 45-45 45-8.284 0-15 6.716-15 15s6.716 15 15 15zm60-30.047c4.279 5.698 9.35 10.768 15.047 15.047-5.698 4.28-10.768 9.35-15.047 15.047-4.279-5.698-9.35-10.768-15.047-15.047 5.698-4.28 10.768-9.35 15.047-15.047z"/></svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Wardrobe Menu -->
+        <div class="wardrobe-overlay" id="wardrobe-overlay">
+            <div class="wardrobe-menu">
+                <button class="wardrobe-close-btn" id="wardrobe-close-btn">&times;</button>
+                <div class="wardrobe-header">
+                    <h2>All Tools</h2>
+                </div>
+                <div class="wardrobe-filters">
+                    <!-- JS will populate this -->
+                </div>
+                <div class="wardrobe-grid" id="wardrobe-grid">
+                    <!-- JS will populate this -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>QR Code Generator</h1>
+            <p>Create QR codes for URLs, text, WiFi, and more. Customize colors and download in multiple formats.</p>
+        </div>
+
+        <!-- Main Content -->
+        <div class="qr-container">
+            <!-- Input Panel -->
+            <div class="input-panel">
+                <div class="input-tabs">
+                    <button class="tab-button active" data-tab="text">Text/URL</button>
+                    <button class="tab-button" data-tab="wifi">WiFi</button>
+                    <button class="tab-button" data-tab="email">Email</button>
+                    <button class="tab-button" data-tab="phone">Phone</button>
+                    <button class="tab-button" data-tab="sms">SMS</button>
+                </div>
+
+                <!-- Text/URL Tab -->
+                <div class="tab-content active" id="text-tab">
+                    <div class="input-group">
+                        <label class="input-label" for="text-input">Enter Text or URL</label>
+                        <textarea id="text-input" class="input-field" placeholder="https://example.com or any text"></textarea>
+                        <span class="input-helper">Enter any text, URL, or data you want to encode</span>
+                    </div>
+                </div>
+
+                <!-- WiFi Tab -->
+                <div class="tab-content" id="wifi-tab">
+                    <div class="input-group">
+                        <label class="input-label" for="wifi-ssid">Network Name (SSID)</label>
+                        <input type="text" id="wifi-ssid" class="input-field" placeholder="MyWiFiNetwork">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label" for="wifi-password">Password</label>
+                        <input type="password" id="wifi-password" class="input-field" placeholder="Enter WiFi password">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label" for="wifi-security">Security Type</label>
+                        <select id="wifi-security" class="wifi-security-select">
+                            <option value="WPA">WPA/WPA2</option>
+                            <option value="WEP">WEP</option>
+                            <option value="nopass">No Password</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">
+                            <input type="checkbox" id="wifi-hidden"> Hidden Network
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Email Tab -->
+                <div class="tab-content" id="email-tab">
+                    <div class="input-group">
+                        <label class="input-label" for="email-address">Email Address</label>
+                        <input type="email" id="email-address" class="input-field" placeholder="example@email.com">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label" for="email-subject">Subject (Optional)</label>
+                        <input type="text" id="email-subject" class="input-field" placeholder="Email subject">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label" for="email-body">Message (Optional)</label>
+                        <textarea id="email-body" class="input-field" placeholder="Email message"></textarea>
+                    </div>
+                </div>
+
+                <!-- Phone Tab -->
+                <div class="tab-content" id="phone-tab">
+                    <div class="input-group">
+                        <label class="input-label" for="phone-number">Phone Number</label>
+                        <input type="tel" id="phone-number" class="input-field" placeholder="+1234567890">
+                        <span class="input-helper">Include country code for international numbers</span>
+                    </div>
+                </div>
+
+                <!-- SMS Tab -->
+                <div class="tab-content" id="sms-tab">
+                    <div class="input-group">
+                        <label class="input-label" for="sms-number">Phone Number</label>
+                        <input type="tel" id="sms-number" class="input-field" placeholder="+1234567890">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label" for="sms-message">Message (Optional)</label>
+                        <textarea id="sms-message" class="input-field" placeholder="SMS message"></textarea>
+                    </div>
+                </div>
+
+                <!-- QR Options -->
+                <div class="qr-options">
+                    <h3 class="options-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                        Customization Options
+                    </h3>
+
+                    <div class="input-group">
+                        <label class="input-label">QR Code Size</label>
+                        <input type="range" class="size-slider" id="size-slider" min="200" max="500" value="300">
+                        <div class="size-display">
+                            <span>200px</span>
+                            <span id="size-value">300px</span>
+                            <span>500px</span>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Colors</label>
+                        <div class="color-input-group">
+                            <div class="color-input-wrapper">
+                                <input type="color" id="fg-color" class="color-input" value="#000000">
+                                <label for="fg-color">Foreground</label>
+                            </div>
+                            <div class="color-input-wrapper">
+                                <input type="color" id="bg-color" class="color-input" value="#FFFFFF">
+                                <label for="bg-color">Background</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Error Correction Level</label>
+                        <div class="error-correction-group">
+                            <button class="error-level-btn" data-level="L">Low (7%)</button>
+                            <button class="error-level-btn active" data-level="M">Medium (15%)</button>
+                            <button class="error-level-btn" data-level="Q">Quartile (25%)</button>
+                            <button class="error-level-btn" data-level="H">High (30%)</button>
+                        </div>
+                        <span class="input-helper">Higher levels allow more damage but result in denser codes</span>
+                    </div>
+                </div>
+
+                <button class="generate-btn" id="generate-btn">Generate QR Code</button>
+            </div>
+
+            <!-- Output Panel -->
+            <div class="output-panel">
+                <div class="qr-display" id="qr-display">
+                    <div class="qr-placeholder">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M3 11h8V3H3v8zm2-6h4v4H5V5zm8-2v8h8V3h-8zm6 6h-4V5h4v4zM3 21h8v-8H3v8zm2-6h4v4H5v-4zm13 0h-2v2h2v-2zm2 0v2h2v-2h-2zm-2 2h-2v2h2v2h-2v-2h-2v2h-2v-2h2v-2h2v-2h2v2zm2-2v-2h2v2h-2zm0 4h2v2h-2v-2z"/>
+                        </svg>
+                        <p>Your QR code will appear here</p>
+                    </div>
+                    <canvas id="qr-canvas" class="qr-canvas" style="display: none;"></canvas>
+                </div>
+
+                <div class="download-options" id="download-options" style="display: none;">
+                    <button class="download-btn primary" id="download-png">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                        </svg>
+                        Download PNG
+                    </button>
+                    <button class="download-btn secondary" id="download-svg">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                        </svg>
+                        Download SVG
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <section class="features-section">
+            <h2>QR Code Types</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
+                    </svg>
+                    <h3>URLs & Links</h3>
+                    <p>Create QR codes for websites, social media profiles, or any online content.</p>
+                </div>
+                <div class="feature">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M1 9l2-2v8c0 1.1.9 2 2 2h14v2H5c-2.21 0-4-1.79-4-4V9zm14-6h-2v2h2V3zm0 4h-2v2h2V7zm2-4v2h2V3h-2zm2 4V5h-2v2h2zM9 3H7v2h2V3zm4 0h-2v2h2V3zm0 4h-2v2h2V7zm-4 0H7v2h2V7zm12-4h2c1.1 0 2 .9 2 2v10c0 1.1-.9 2-2 2H9c-1.1 0-2-.9-2-2V5c0-1.1.9-2 2-2h2v2H9v10h14V5h-2V3z"/>
+                    </svg>
+                    <h3>WiFi Networks</h3>
+                    <p>Share WiFi credentials easily. Guests can connect instantly by scanning.</p>
+                </div>
+                <div class="feature">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                    </svg>
+                    <h3>Email & Contact</h3>
+                    <p>Generate codes for email addresses with pre-filled subjects and messages.</p>
+                </div>
+                <div class="feature">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20 15.5c-1.25 0-2.45-.2-3.57-.57-.35-.11-.74-.03-1.02.24l-2.2 2.2c-2.83-1.44-5.15-3.75-6.59-6.59l2.2-2.21c.28-.26.36-.65.25-1C8.7 6.45 8.5 5.25 8.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z"/>
+                    </svg>
+                    <h3>Phone & SMS</h3>
+                    <p>Create codes for phone numbers and pre-written text messages.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="site-footer">
+            <div class="footer-content">
+                <a href="https://github.com" target="_blank" style="color: var(--text-secondary); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.207 11.387.6.11.82-.26.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.085 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.93 0-1.31.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.217.694.824.576C20.565 21.795 24 17.297 24 12 24 5.37 18.627 0 12 0z"/></svg>
+                    <span>View on GitHub</span>
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <!-- QR Code Generation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="qr-generator.js"></script>
+    <script src="theme.js" defer></script>
+    <script src="wardrobe-menu.js" defer></script>
+</body>
+</html>

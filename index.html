@@ -1,0 +1,387 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pera nai Vai - A Collection of Free Online Tools for Bangladesh</title>
+    <link rel="stylesheet" href="tools.css?v=1.0.0">
+</head>
+<body>
+    <div class="site-container">
+        <!-- Header -->
+        <header class="site-header">
+            <div class="header-content">
+                <a href="index.html" class="logo" style="text-decoration: none; color: inherit;">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
+                    </svg>
+                    <span>Pera nai Vai</span>
+                </a>
+                <div class="header-actions">
+                    <button id="theme-toggle" class="theme-toggle" title="Toggle dark mode">
+                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 512 512" fill="currentColor"><circle cx="256" cy="255.868" r="135"/><path d="m256 0c-8.291 0-15 6.709-15 15v60.868c0 8.291 6.709 15 15 15s15-6.709 15-15v-60.868c0-8.291-6.709-15-15-15zm0 420.868c-8.291 0-15 6.709-15 15v61.132c0 8.291 6.709 15 15 15s15-6.709 15-15v-61.132c0-8.291-6.709-15-15-15zm-165-165c0-8.291-6.709-15-15-15h-61c-8.291 0-15 6.709-15 15s6.709 15 15 15h61c8.291 0 15-6.709 15-15zm406-15h-61c-8.291 0-15 6.709-15 15s6.709 15 15 15h61c8.291 0 15-6.709 15-15s-6.709-15-15-15zm-400.097-165.307c-5.859-5.859-15.352-5.859-21.211 0s-5.859 15.352 0 21.211l42.422 42.422c5.86 5.859 15.352 5.859 21.211 0s5.859-15.352 0-21.211zm296.983 296.982c-5.859-5.859-15.352-5.859-21.211 0s-5.859 15.352 0 21.211l42.422 42.422c5.86 5.859 15.352 5.859 21.211 0s5.859-15.352 0-21.211zm-275.772 0-42.422 42.422c-5.859 5.859-5.859 15.352 0 21.211 5.86 5.859 15.352 5.859 21.211 0l42.422-42.422c5.859-5.859 5.859-15.352 0-21.211s-15.351-5.859-21.211 0zm275.772-233.35 42.422-42.422c5.859-5.859 5.859-15.352 0-21.211s-15.352-5.859-21.211 0l-42.422 42.422c-5.859 5.859-5.859 15.352 0 21.211 5.859 5.86 15.352 5.86 21.211 0z"/></svg>
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 512 512" fill="currentColor" style="display: none;"><path d="m499.277 308.658c-5.687-3.527-13.022-2.86-17.98 1.634-36.074 32.7-82.48 50.708-130.67 50.708-107.523 0-195-87.477-195-195 0-48.189 18.009-94.595 50.708-130.67 4.494-4.958 5.161-12.293 1.634-17.98-3.526-5.687-10.394-8.35-16.832-6.528-105.69 29.911-185.51 127.121-185.51 245.178 0 141.159 114.393 256 255 256 117.121 0 215.005-79.893 245.177-186.51 1.823-6.439-.84-13.306-6.527-16.832zm-238.65 173.342c-124.065 0-225-101.383-225-226 0-83.209 46.524-158.722 117.59-197.495-17.992 32.799-27.59 69.666-27.59 107.495 0 124.065 100.935 225 225 225 37.877 0 74.783-9.619 107.613-27.654-38.809 71.695-114.409 118.654-197.613 118.654zm90-392c24.813 0 45 20.187 45 45 0 8.284 6.716 15 15 15s15-6.716 15-15c0-24.813 20.187-45 45-45 8.284 0 15-6.716 15-15s-6.716-15-15-15c-24.813 0-45-20.187-45-45 0-8.284-6.716-15-15-15s-15 6.716-15 15c0 24.813-20.187 45-45 45-8.284 0-15 6.716-15 15s6.716 15 15 15zm60-30.047c4.279 5.698 9.35 10.768 15.047 15.047-5.698 4.28-10.768 9.349-15.047 15.047-4.279-5.698-9.35-10.768-15.047-15.047 5.698-4.28 10.768-9.349 15.047-15.047zm-150 181.047c24.813 0 45 20.187 45 45 0 8.284 6.716 15 15 15s15-6.716 15-15c0-24.813 20.187-45 45-45 8.284 0 15-6.716 15-15s-6.716-15-15-15c-24.813 0-45-20.187-45-45 0-8.284-6.716-15-15-15s-15 6.716-15 15c0 24.813-20.187 45-45 45-8.284 0-15 6.716-15 15s6.716 15 15 15zm60-30.047c4.279 5.698 9.35 10.768 15.047 15.047-5.698 4.28-10.768 9.35-15.047 15.047-4.279-5.698-9.35-10.768-15.047-15.047 5.698-4.28 10.768-9.35 15.047-15.047z"/></svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Pera nai Vai</h1>
+                <p>Apnar shob dorkari online tools, ekdom easy! Pera nai, shob browser-ei chole.</p>
+            </div>
+        </section>
+
+        <!-- Category Filters -->
+        <section class="category-filters">
+            <div class="category-header">
+                <h2>Browse by Category</h2>
+                <p>Find the perfect tool for your needs</p>
+            </div>
+            <div class="filters-container">
+                <button class="filter-btn active" data-category="all">
+                    <div class="filter-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                        </svg>
+                    </div>
+                    <span>All Tools</span>
+                </button>
+                <button class="filter-btn" data-category="image">
+                    <div class="filter-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                        </svg>
+                    </div>
+                    <span>Image</span>
+                </button>
+                <button class="filter-btn" data-category="finance">
+                    <div class="filter-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
+                        </svg>
+                    </div>
+                    <span>Finance</span>
+                </button>
+                <button class="filter-btn" data-category="utility">
+                    <div class="filter-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/>
+                        </svg>
+                    </div>
+                    <span>Utility</span>
+                </button>
+                <button class="filter-btn" data-category="text">
+                    <div class="filter-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M5 4v3h5.5v12h3V7H19V4z"/>
+                        </svg>
+                    </div>
+                    <span>Text</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Tools Grid -->
+        <main class="tools-grid-container">
+            <div class="tools-grid">
+                <!-- JPEG Compressor Tool -->
+                <div class="tool-card" data-category="image">
+                    <div class="tool-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+                        </svg>
+                    </div>
+                    <h3>JPEG Compressor</h3>
+                    <p>Compress JPEG images directly in your browser. Reduce file size while maintaining quality. No uploads needed.</p>
+                    <div class="tool-features">
+                        <span class="feature-tag">Privacy-First</span>
+                        <span class="feature-tag">Batch Processing</span>
+                        <span class="feature-tag">Instant</span>
+                    </div>
+                    <a href="jpeg-compressor.html" class="tool-link">
+                        Launch Tool
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Tweet to Image Tool -->
+                <div class="tool-card" data-category="image">
+                    <div class="tool-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                    </div>
+                    <h3>Tweet to Image</h3>
+                    <p>Convert Twitter/X posts into beautiful images. Perfect for sharing on other platforms or presentations.</p>
+                    <div class="tool-features">
+                        <span class="feature-tag">Social Media</span>
+                        <span class="feature-tag">Custom Backgrounds</span>
+                        <span class="feature-tag">HD Export</span>
+                    </div>
+                    <a href="tweet-to-image.html" class="tool-link">
+                        Launch Tool
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                        </svg>
+                    </a>
+                </div>
+
+
+
+                <!-- QR Code Generator -->
+                <div class="tool-card" data-category="utility">
+                    <div class="tool-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M3 11h8V3H3v8zm2-6h4v4H5V5zm8-2v8h8V3h-8zm6 6h-4V5h4v4zM3 21h8v-8H3v8zm2-6h4v4H5v-4zm13 0h-2v2h2v-2zm2 0v2h2v-2h-2zm-2 2h-2v2h2v2h-2v-2h-2v2h-2v-2h2v-2h2v-2h2v2zm2-2v-2h2v2h-2zm0 4h2v2h-2v-2z"/>
+                        </svg>
+                    </div>
+                    <h3>QR Code Generator</h3>
+                    <p>Create QR codes for URLs, text, WiFi credentials, and more. Customizable colors and download formats.</p>
+                    <div class="tool-features">
+                        <span class="feature-tag">Multiple Formats</span>
+                        <span class="feature-tag">Custom Design</span>
+                        <span class="feature-tag">SVG Export</span>
+                    </div>
+                    <a href="qr-generator.html" class="tool-link">
+                        Launch Tool
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Email Extractor -->
+                <div class="tool-card" data-category="text">
+                    <div class="tool-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                        </svg>
+                    </div>
+                    <h3>Email Extractor</h3>
+                    <p>Extract email addresses from any text. Find, validate, and export emails with advanced filtering.</p>
+                    <div class="tool-features">
+                        <span class="feature-tag">Regex Parsing</span>
+                        <span class="feature-tag">Bulk Export</span>
+                        <span class="feature-tag">Domain Filter</span>
+                    </div>
+                    <a href="email-extractor.html" class="tool-link">
+                        Launch Tool
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                        </svg>
+                    </a>
+                </div>
+
+
+
+                <!-- Invoice & Bill Generator -->
+                <div class="tool-card" data-category="finance">
+                    <div class="tool-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                        </svg>
+                    </div>
+                    <h3>Invoice & Bill Generator</h3>
+                    <p>Create and download professional invoices and bills. Perfect for freelancers and small businesses.</p>
+                    <div class="tool-features">
+                        <span class="feature-tag">Business</span>
+                        <span class="feature-tag">PDF Export</span>
+                        <span class="feature-tag">Finance</span>
+                    </div>
+                    <a href="invoice-generator.html" class="tool-link">
+                        Launch Tool
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Photo & Signature Resizer -->
+                <div class="tool-card" data-category="image">
+                    <div class="tool-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M4 4h7L9 2H4c-1.1 0-2 .9-2 2v5l2-2V4zm16 0h-5l2-2h3c1.1 0 2 .9 2 2v5l-2-2V4zM4 20h7l-2 2H4c-1.1 0-2-.9-2-2v-5l2 2v3zm16 0h-5l2 2h3c1.1 0 2-.9 2-2v-5l-2 2v3z"/>
+                        </svg>
+                    </div>
+                    <h3>Photo & Signature Resizer</h3>
+                    <p>Resize images for Passport, NID, Visa, and Govt Job applications in Bangladesh with official presets.</p>
+                    <div class="tool-features">
+                        <span class="feature-tag">Passport Photo</span>
+                        <span class="feature-tag">Govt Jobs</span>
+                        <span class="feature-tag">Signature</span>
+                    </div>
+                    <a href="photo-resizer.html" class="tool-link">
+                        Launch Tool
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Bangla Converter -->
+                <div class="tool-card" data-category="text">
+                    <div class="tool-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                        </svg>
+                    </div>
+                    <h3>Bangla Converter</h3>
+                    <p>Convert modern Unicode (Avro) text to legacy Bijoy Classic format for DTP, design, and print work.</p>
+                    <div class="tool-features">
+                        <span class="feature-tag">Bangla</span>
+                        <span class="feature-tag">Unicode</span>
+                        <span class="feature-tag">Bijoy</span>
+                    </div>
+                    <a href="bangla-converter.html" class="tool-link">
+                        Launch Tool
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Financial Calculators -->
+                <div class="tool-card" data-category="finance">
+                    <div class="tool-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+                        </svg>
+                    </div>
+                    <h3>Financial Calculators</h3>
+                    <p>A suite of calculators for EMI, DPS, and FDR. Plan your loans and savings for any bank in Bangladesh.</p>
+                    <div class="tool-features">
+                        <span class="feature-tag">Finance</span>
+                        <span class="feature-tag">Loan</span>
+                        <span class="feature-tag">Savings</span>
+                    </div>
+                    <a href="financial-calculators.html" class="tool-link">
+                        Launch Tool
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- MFS Helper -->
+                <div class="tool-card" data-category="finance">
+                    <div class="tool-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.1.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm-1 14H5c-.55 0-1-.45-1-1V7c0-.55.45-1 1-1h14c.55 0 1 .45 1 1v10c0 .55-.45 1-1 1z"/>
+                        </svg>
+                    </div>
+                    <h3>MFS Helper</h3>
+                    <p>Compare fees for bKash, Nagad, and Rocket. Includes a smart calculator, comparison table, and FAQ.</p>
+                    <div class="tool-features">
+                        <span class="feature-tag">Finance</span>
+                        <span class="feature-tag">Calculator</span>
+                        <span class="feature-tag">Bangladesh</span>
+                    </div>
+                    <a href="mfs-helper.html" class="tool-link">
+                        Launch Tool
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Land Unit Converter -->
+                <div class="tool-card" data-category="utility">
+                    <div class="tool-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M21 3H3v18h18V3zm-2 16H5V5h14v14zM7 15h2v2H7v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2zM7 11h2v2H7v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2zM7 7h2v2H7V7zm4 0h2v2h-2V7z"/>
+                        </svg>
+                    </div>
+                    <h3>Land Unit Converter</h3>
+                    <p>Convert between Bangladeshi land units like Bigha, Katha, Shotok, and Acre. Essential for property dealings.</p>
+                    <div class="tool-features">
+                        <span class="feature-tag">Real Estate</span>
+                        <span class="feature-tag">Finance</span>
+                        <span class="feature-tag">Local Units</span>
+                    </div>
+                    <a href="land-converter.html" class="tool-link">
+                        Launch Tool
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Color Palette Generator -->
+                <div class="tool-card" data-category="image">
+                    <div class="tool-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.49 2 2 6.49 2 12s4.49 10 10 10c1.38 0 2.5-1.12 2.5-2.5 0-.61-.23-1.2-.64-1.67-.08-.09-.13-.21-.13-.33 0-.28.22-.5.5-.5H16c3.31 0 6-2.69 6-6 0-4.96-4.49-9-10-9zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 8 6.5 8 8 8.67 8 9.5 7.33 11 6.5 11zm3-4C8.67 7 8 6.33 8 5.5S8.67 4 9.5 4s1.5.67 1.5 1.5S10.33 7 9.5 7zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 4 14.5 4s1.5.67 1.5 1.5S15.33 7 14.5 7zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 8 17.5 8s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
+                        </svg>
+                    </div>
+                    <h3>Color Palette from Image</h3>
+                    <p>Extract color palettes from images or generate harmonious color schemes for your design projects.</p>
+                    <div class="tool-features">
+                        <span class="feature-tag">Image Analysis</span>
+                        <span class="feature-tag">Color Theory</span>
+                        <span class="feature-tag">Export Codes</span>
+                    </div>
+                    <a href="color-palette.html" class="tool-link">
+                        Launch Tool
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </main>
+
+        <!-- Features Section -->
+        <section class="features-section">
+            <h2>Why Use Our Tools?</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                    </svg>
+                    <h3>100% Private</h3>
+                    <p>All processing happens in your browser. Your data never leaves your device.</p>
+                </div>
+                <div class="feature">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/>
+                    </svg>
+                    <h3>Instant Results</h3>
+                    <p>No waiting for uploads or server processing. Get results immediately.</p>
+                </div>
+                <div class="feature">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                    <h3>No Installation</h3>
+                    <p>Works directly in your web browser. No downloads or installations required.</p>
+                </div>
+                <div class="feature">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M21 3H3c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5a2 2 0 0 0-2-2zm0 11H3V5h18v9z"/>
+                    </svg>
+                    <h3>Cross-Platform</h3>
+                    <p>Works on any device with a modern web browser - desktop, tablet, or mobile.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="site-footer">
+            <div class="footer-content">
+                <a href="https://github.com" target="_blank" style="color: var(--text-secondary); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.207 11.387.6.11.82-.26.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.085 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.93 0-1.31.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.217.694.824.576C20.565 21.795 24 17.297 24 12 24 5.37 18.627 0 12 0z"/></svg>
+                    <span>View on GitHub</span>
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="theme.js" defer></script>
+    <script src="category-filter.js" defer></script>
+</body>
+</html>

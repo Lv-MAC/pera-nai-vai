@@ -1,0 +1,256 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tweet to Image Converter | Pera nai Vai</title>
+    <meta name="description" content="Convert any Twitter (X) post into a beautiful, shareable image for Instagram, Facebook, or LinkedIn. Customize backgrounds and styles.">
+    <link rel="stylesheet" href="tools.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Professional Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="brand">
+                    <a href="index.html" class="logo" style="text-decoration: none; color: inherit;">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
+                        </svg>
+                        <span>Pera nai Vai</span>
+                    </a>
+                    <span class="brand-tag">A Free Online Tool</span>
+                </div>
+
+                <div class="header-actions">
+                    <button class="burger-menu" id="burger-menu">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+                        <span>Menu</span>
+                    </button>
+                    <button id="theme-toggle" class="theme-toggle" title="Toggle dark mode">
+                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 512 512" fill="currentColor"><circle cx="256" cy="255.868" r="135"/><path d="m256 0c-8.291 0-15 6.709-15 15v60.868c0 8.291 6.709 15 15 15s15-6.709 15-15v-60.868c0-8.291-6.709-15-15-15zm0 420.868c-8.291 0-15 6.709-15 15v61.132c0 8.291 6.709 15 15 15s15-6.709 15-15v-61.132c0-8.291-6.709-15-15-15zm-165-165c0-8.291-6.709-15-15-15h-61c-8.291 0-15 6.709-15 15s6.709 15 15 15h61c8.291 0 15-6.709 15-15zm406-15h-61c-8.291 0-15 6.709-15 15s6.709 15 15 15h61c8.291 0 15-6.709 15-15s-6.709-15-15-15zm-400.097-165.307c-5.859-5.859-15.352-5.859-21.211 0s-5.859 15.352 0 21.211l42.422 42.422c5.86 5.859 15.352 5.859 21.211 0s5.859-15.352 0-21.211zm296.983 296.982c-5.859-5.859-15.352-5.859-21.211 0s-5.859 15.352 0 21.211l42.422 42.422c5.86 5.859 15.352 5.859 21.211 0s5.859-15.352 0-21.211zm-275.772 0-42.422 42.422c-5.859 5.859-5.859 15.352 0 21.211 5.86 5.859 15.352 5.859 21.211 0l42.422-42.422c5.859-5.859 5.859-15.352 0-21.211s-15.351-5.859-21.211 0zm275.772-233.35 42.422-42.422c5.859-5.859 5.859-15.352 0-21.211s-15.352-5.859-21.211 0l-42.422 42.422c-5.859 5.859-5.859 15.352 0 21.211 5.859 5.86 15.352 5.86 21.211 0z"/></svg>
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 512 512" fill="currentColor" style="display: none;"><path d="m499.277 308.658c-5.687-3.527-13.022-2.86-17.98 1.634-36.074 32.7-82.48 50.708-130.67 50.708-107.523 0-195-87.477-195-195 0-48.189 18.009-94.595 50.708-130.67 4.494-4.958 5.161-12.293 1.634-17.98-3.526-5.687-10.394-8.35-16.832-6.528-105.69 29.911-185.51 127.121-185.51 245.178 0 141.159 114.393 256 255 256 117.121 0 215.005-79.893 245.177-186.51 1.823-6.439-.84-13.306-6.527-16.832zm-238.65 173.342c-124.065 0-225-101.383-225-226 0-83.209 46.524-158.722 117.59-197.495-17.992 32.799-27.59 69.666-27.59 107.495 0 124.065 100.935 225 225 225 37.877 0 74.783-9.619 107.613-27.654-38.809 71.695-114.409 118.654-197.613 118.654zm90-392c24.813 0 45 20.187 45 45 0 8.284 6.716 15 15 15s15-6.716 15-15c0-24.813 20.187-45 45-45 8.284 0 15-6.716 15-15s-6.716-15-15-15c-24.813 0-45-20.187-45-45 0-8.284-6.716-15-15-15s-15 6.716-15 15c0 24.813-20.187 45-45 45-8.284 0-15 6.716-15 15s6.716 15 15 15zm60-30.047c4.279 5.698 9.35 10.768 15.047 15.047-5.698 4.28-10.768 9.349-15.047 15.047-4.279-5.698-9.35-10.768-15.047-15.047 5.698-4.28 10.768-9.349 15.047-15.047zm-150 181.047c24.813 0 45 20.187 45 45 0 8.284 6.716 15 15 15s15-6.716 15-15c0-24.813 20.187-45 45-45 8.284 0 15-6.716 15-15s-6.716-15-15-15c-24.813 0-45-20.187-45-45 0-8.284-6.716-15-15-15s-15 6.716-15 15c0 24.813-20.187 45-45 45-8.284 0-15 6.716-15 15s6.716 15 15 15zm60-30.047c4.279 5.698 9.35 10.768 15.047 15.047-5.698 4.28-10.768 9.35-15.047 15.047-4.279-5.698-9.35-10.768-15.047-15.047 5.698-4.28 10.768-9.35 15.047-15.047z"/></svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Wardrobe Menu -->
+        <div class="wardrobe-overlay" id="wardrobe-overlay">
+            <div class="wardrobe-menu">
+                <button class="wardrobe-close-btn" id="wardrobe-close-btn">&times;</button>
+                <div class="wardrobe-header">
+                    <h2>All Tools</h2>
+                </div>
+                <div class="wardrobe-filters">
+                    <!-- JS will populate this -->
+                </div>
+                <div class="wardrobe-grid" id="wardrobe-grid">
+                    <!-- JS will populate this -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Wardrobe Menu -->
+        <div class="wardrobe-overlay" id="wardrobe-overlay">
+            <div class="wardrobe-menu">
+                <button class="wardrobe-close-btn" id="wardrobe-close-btn">&times;</button>
+                <div class="wardrobe-header">
+                    <h2>All Tools</h2>
+                </div>
+                <div class="wardrobe-filters">
+                    <!-- JS will populate this -->
+                </div>
+                <div class="wardrobe-grid" id="wardrobe-grid">
+                    <!-- JS will populate this -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Left Panel - Preview and Download -->
+            <div class="preview-panel">
+                <div class="panel-header">
+                    <div class="panel-header-left">
+                        <h2>Live Preview</h2>
+                        <span class="preview-status" id="preview-status">Ready to convert</span>
+                    </div>
+                    <button id="download-btn" class="download-btn" style="display: none;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                        </svg>
+                        Download HD Image
+                    </button>
+                </div>
+                
+                <div class="canvas-container">
+                    <div id="preview-section" class="preview-section" style="display: none;">
+                        <div class="preview-wrapper">
+                            <div id="tweet-card" class="tweet-card">
+                                <!-- Tweet content will be dynamically inserted here -->
+                            </div>
+                        </div>
+                        <div class="download-info">
+                            <span>1080x1080px • PNG Format • Optimized for Social Media</span>
+                        </div>
+                    </div>
+                    
+                    <div id="empty-state" class="empty-state">
+                        <svg width="120" height="120" viewBox="0 0 24 24" fill="currentColor" opacity="0.1">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                        <p>Enter a Twitter URL to get started</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel - Controls -->
+            <div class="controls-panel">
+                <!-- Input Section -->
+                <div class="control-section">
+                    <div class="section-header">
+                        <h3>Tweet Input</h3>
+                        <span class="section-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                        </span>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="twitter-url" class="input-label">Twitter/X Post URL</label>
+                        <input 
+                            type="url" 
+                            id="twitter-url" 
+                            placeholder="https://x.com/username/status/1234567890" 
+                            class="url-input"
+                        >
+                        <span class="input-helper">Paste any public Twitter/X post URL</span>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="profile-url" class="input-label">Custom Profile Picture (Optional)</label>
+                        <input 
+                            type="url" 
+                            id="profile-url" 
+                            placeholder="https://example.com/profile-picture.jpg" 
+                            class="url-input"
+                        >
+                        <span class="input-helper">Override the default profile picture</span>
+                    </div>
+                    
+                    <button id="convert-btn" class="convert-btn primary-btn">
+                        <span class="btn-text">Generate Image</span>
+                        <div class="loading-spinner"></div>
+                    </button>
+                    
+                    <div id="error-message" class="error-message"></div>
+                </div>
+
+                <!-- Background Selector -->
+                <div class="control-section background-section">
+                    <div class="section-header">
+                        <h3>Background Style</h3>
+                        <span class="section-badge">16 Options</span>
+                    </div>
+                    
+                    <div class="background-selector">
+                        <div class="bg-tabs">
+                            <button class="bg-tab active" data-tab="gradients">Gradients</button>
+                            <button class="bg-tab" data-tab="solids">Solid Colors</button>
+                            <button class="bg-tab" data-tab="patterns">Patterns</button>
+                        </div>
+                        
+                        <div class="background-options-container">
+                            <div class="background-options tab-gradients active">
+                                <div class="background-option active" data-bg-type="gradient" data-bg-value="red-gradient" title="Red Gradient">
+                                    <div class="bg-preview" style="background: linear-gradient(135deg, #000000 0%, #DC2626 100%)"></div>
+                                    <span class="bg-label">Red</span>
+                                </div>
+                                <div class="background-option" data-bg-type="gradient" data-bg-value="sunset" title="Sunset">
+                                    <div class="bg-preview" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"></div>
+                                    <span class="bg-label">Sunset</span>
+                                </div>
+                                <div class="background-option" data-bg-type="gradient" data-bg-value="ocean" title="Ocean">
+                                    <div class="bg-preview" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)"></div>
+                                    <span class="bg-label">Ocean</span>
+                                </div>
+                                <div class="background-option" data-bg-type="gradient" data-bg-value="forest" title="Forest">
+                                    <div class="bg-preview" style="background: linear-gradient(135deg, #0ba360 0%, #3cba92 100%)"></div>
+                                    <span class="bg-label">Forest</span>
+                                </div>
+                                <div class="background-option" data-bg-type="gradient" data-bg-value="aurora" title="Aurora">
+                                    <div class="bg-preview" style="background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)"></div>
+                                    <span class="bg-label">Aurora</span>
+                                </div>
+                                <div class="background-option" data-bg-type="gradient" data-bg-value="fire" title="Fire">
+                                    <div class="bg-preview" style="background: linear-gradient(135deg, #ff9a56 0%, #ff6a88 100%)"></div>
+                                    <span class="bg-label">Fire</span>
+                                </div>
+                            </div>
+                            
+                            <div class="background-options tab-solids">
+                                <div class="background-option" data-bg-type="solid" data-bg-value="#DC2626" title="Red">
+                                    <div class="bg-preview" style="background: #DC2626"></div>
+                                    <span class="bg-label">Red</span>
+                                </div>
+                                <div class="background-option" data-bg-type="solid" data-bg-value="#000000" title="Black">
+                                    <div class="bg-preview" style="background: #000000"></div>
+                                    <span class="bg-label">Black</span>
+                                </div>
+                                <div class="background-option" data-bg-type="solid" data-bg-value="#FFFFFF" title="White">
+                                    <div class="bg-preview" style="background: #FFFFFF; border: 1px solid #e1e8ed"></div>
+                                    <span class="bg-label">White</span>
+                                </div>
+                                <div class="background-option" data-bg-type="solid" data-bg-value="#6B46C1" title="Purple">
+                                    <div class="bg-preview" style="background: #6B46C1"></div>
+                                    <span class="bg-label">Purple</span>
+                                </div>
+                                <div class="background-option" data-bg-type="solid" data-bg-value="#065F46" title="Dark Green">
+                                    <div class="bg-preview" style="background: #065F46"></div>
+                                    <span class="bg-label">Green</span>
+                                </div>
+                                <div class="background-option" data-bg-type="solid" data-bg-value="#1E293B" title="Slate">
+                                    <div class="bg-preview" style="background: #1E293B"></div>
+                                    <span class="bg-label">Slate</span>
+                                </div>
+                            </div>
+                            
+                            <div class="background-options tab-patterns">
+                                <div class="background-option" data-bg-type="pattern" data-bg-value="dots" title="Dots Pattern">
+                                    <div class="bg-preview pattern-dots"></div>
+                                    <span class="bg-label">Dots</span>
+                                </div>
+                                <div class="background-option" data-bg-type="pattern" data-bg-value="lines" title="Lines Pattern">
+                                    <div class="bg-preview pattern-lines"></div>
+                                    <span class="bg-label">Lines</span>
+                                </div>
+                                <div class="background-option" data-bg-type="pattern" data-bg-value="grid" title="Grid Pattern">
+                                    <div class="bg-preview pattern-grid"></div>
+                                    <span class="bg-label">Grid</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="custom-color-section">
+                            <div class="background-option color-picker-option" data-bg-type="custom" title="Custom Color">
+                                <input type="color" id="custom-color" value="#DC2626">
+                                <div class="bg-preview" id="custom-preview"></div>
+                                <span class="bg-label">Custom</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <canvas id="canvas" style="display: none;"></canvas>
+    </div>
+
+    <script src="main.js"></script>
+    <script src="theme.js" defer></script>
+    <script src="wardrobe-menu.js" defer></script>
+</body>
+</html>
