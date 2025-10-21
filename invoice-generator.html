@@ -16,7 +16,143 @@
             gap: 2rem;
         }
         @media (max-width: 992px) {
-            .invoice-container { grid-template-columns: 1fr; }
+            .invoice-container {
+                grid-template-columns: 1fr;
+                padding: 0 0.5rem;
+                margin: 1rem auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .invoice-container {
+                padding: 0 0.5rem;
+                gap: 1.5rem;
+            }
+
+            .input-panel, .preview-panel {
+                padding: 1.5rem 1rem;
+                overflow-x: hidden;
+            }
+
+            /* Stack item fields vertically on mobile */
+            .item-list-header {
+                display: none; /* Hide header on mobile */
+            }
+
+            .item-row {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                padding: 1rem;
+                background: var(--bg-color);
+                border-radius: 8px;
+                margin-bottom: 1rem;
+                border: 1px solid var(--border-color);
+            }
+
+            .item-row input {
+                width: 100%;
+                padding: 0.75rem;
+                font-size: 16px; /* Prevent iOS zoom */
+            }
+
+            .item-row .description-field,
+            .item-row .quantity-field,
+            .item-row .price-field,
+            .item-row .total-field {
+                grid-column: auto;
+            }
+
+            /* Add labels for mobile */
+            .item-row input::placeholder {
+                font-weight: 500;
+            }
+
+            .add-item-btn {
+                width: 100%;
+                padding: 0.875rem 1rem;
+                font-size: 1rem;
+            }
+
+            .download-btn {
+                width: 100%;
+                padding: 1rem;
+                font-size: 1rem;
+            }
+
+            /* Invoice Preview Mobile Optimization */
+            .invoice-preview-area {
+                padding: 1rem;
+                font-size: 11px;
+                min-height: 600px;
+            }
+
+            .invoice-header-preview {
+                flex-direction: column;
+                gap: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .invoice-details-preview {
+                text-align: left;
+            }
+
+            .invoice-address-section {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .invoice-table-preview {
+                font-size: 10px;
+            }
+
+            .invoice-table-preview th,
+            .invoice-table-preview td {
+                padding: 6px 4px;
+            }
+
+            .invoice-title-preview {
+                font-size: 20px;
+            }
+
+            .totals-section {
+                font-size: 0.9rem;
+            }
+
+            .totals-row.grand-total {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .input-panel, .preview-panel {
+                padding: 1rem 0.75rem;
+                border-radius: 8px;
+            }
+
+            .invoice-preview-area {
+                padding: 0.75rem;
+                font-size: 10px;
+            }
+
+            .invoice-title-preview {
+                font-size: 18px;
+            }
+
+            .invoice-table-preview {
+                font-size: 9px;
+            }
+
+            .invoice-table-preview th,
+            .invoice-table-preview td {
+                padding: 4px 2px;
+            }
+
+            /* Make invoice table scrollable horizontally on very small screens */
+            .invoice-table-wrapper {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
         }
 
         .input-panel, .preview-panel {
