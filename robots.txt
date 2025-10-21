@@ -1,0 +1,18 @@
+# robots.txt for Pera nai Vai - Free Online Tools
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://pera-nai-vai.vercel.app/sitemap.xml
+
+# Disallow indexing of assets (optional, but good practice)
+Disallow: /assets/
+Disallow: /*.js$
+Disallow: /*.css$
+
+# Allow all HTML pages
+Allow: /*.html
+
+# Crawl delay (optional, helps with server load)
+Crawl-delay: 1
