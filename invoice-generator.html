@@ -48,6 +48,7 @@
                 border-radius: 8px;
                 margin-bottom: 1rem;
                 border: 1px solid var(--border-color);
+                position: relative;
             }
 
             .item-row input {
@@ -66,6 +67,13 @@
             /* Add labels for mobile */
             .item-row input::placeholder {
                 font-weight: 500;
+            }
+
+            .remove-item-btn {
+                width: 100%;
+                margin-top: 0.5rem;
+                padding: 0.75rem;
+                font-size: 14px;
             }
 
             .add-item-btn {
@@ -188,7 +196,7 @@
 
         .item-list-header, .item-row {
             display: grid;
-            grid-template-columns: 3fr 1fr 1fr 1fr;
+            grid-template-columns: 3fr 1fr 1fr 1fr auto;
             gap: 0.5rem;
             align-items: center;
             margin-bottom: 0.5rem;
@@ -198,6 +206,14 @@
             color: var(--text-secondary);
             padding-bottom: 0.5rem;
             border-bottom: 1px solid var(--border-color);
+        }
+        .item-row {
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: background-color 0.2s ease;
+        }
+        .item-row:hover {
+            background: var(--hover-bg);
         }
         .item-row input {
             padding: 0.5rem;
@@ -211,14 +227,41 @@
         .item-row .price-field { grid-column: 3 / span 1; }
         .item-row .total-field { grid-column: 4 / span 1; background: var(--hover-bg); text-align: right; }
 
-        .add-item-btn {
-            background: var(--secondary-color);
+        .remove-item-btn {
+            grid-column: 5 / span 1;
+            background: #dc3545;
             color: white;
             border: none;
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            min-width: 40px;
+        }
+        .remove-item-btn:hover {
+            background: #c82333;
+            transform: scale(1.05);
+        }
+
+        .add-item-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
             border-radius: 8px;
             cursor: pointer;
             margin-top: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .add-item-btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
         }
 
         .totals-section {
@@ -364,11 +407,17 @@
                     <div>Qty</div>
                     <div>Price</div>
                     <div>Total</div>
+                    <div></div>
                 </div>
                 <div id="item-list">
                     <!-- Item rows will be added here by JS -->
                 </div>
-                <button id="add-item-btn" class="action-btn secondary">Add Item</button>
+                <button id="add-item-btn" class="add-item-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                    </svg>
+                    Add Item
+                </button>
 
                 <div class="input-group" style="margin-top: 2rem;">
                     <label for="notes">Notes / Payment Terms</label>

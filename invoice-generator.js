@@ -17,10 +17,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const invoicePreviewArea = document.getElementById('invoice-preview-area');
 
     let logoDataUrl = '';
+    let updateTimeout = null;
 
     // --- Helper Functions ---
     function formatCurrency(amount) {
         return `৳${parseFloat(amount).toFixed(2)}`;
+    }
+
+    // Debounced update for better performance
+    function debouncedUpdate() {
+        if (updateTimeout) clearTimeout(updateTimeout);
+        updateTimeout = setTimeout(() => updatePreview(), 150);
     }
 
     function updatePreview() {
@@ -111,7 +118,11 @@ document.addEventListener('DOMContentLoaded', () => {
             <input type="number" class="quantity-field" value="1" min="0">
             <input type="number" class="price-field" value="0.00" min="0" step="0.01">
             <input type="text" class="total-field" value="0.00" readonly>
-            <button class="remove-item-btn action-btn secondary" style="width: auto;">X</button>
+            <button class="remove-item-btn" title="Delete item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                </svg>
+            </button>
         `;
         itemList.appendChild(row);
         addEventListenersToRow(row);
@@ -128,14 +139,22 @@ document.addEventListener('DOMContentLoaded', () => {
             const quantity = parseFloat(qtyInput.value) || 0;
             const price = parseFloat(priceInput.value) || 0;
             totalField.value = (quantity * price).toFixed(2);
-            updatePreview();
+            debouncedUpdate();
         };
 
         qtyInput.addEventListener('input', calculateRowTotal);
         priceInput.addEventListener('input', calculateRowTotal);
-        row.querySelector('.description-field').addEventListener('input', updatePreview);
+        row.querySelector('.description-field').addEventListener('input', debouncedUpdate);
 
         removeBtn.addEventListener('click', () => {
+            const itemCount = itemList.querySelectorAll('.item-row').length;
+
+            // Prevent deletion if only 1 item remains
+            if (itemCount <= 1) {
+                alert('You must have at least one item in the invoice.');
+                return;
+            }
+
             row.remove();
             updatePreview();
         });
@@ -143,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Event Listeners ---
     const inputFields = document.querySelectorAll('.input-field, .input-textarea');
-    inputFields.forEach(field => field.addEventListener('input', updatePreview));
+    inputFields.forEach(field => field.addEventListener('input', debouncedUpdate));
 
     addItemBtn.addEventListener('click', addRow);
 
