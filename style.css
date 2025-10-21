@@ -31,8 +31,18 @@ body {
 .app-container {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    min-height: 100vh;
+    max-height: 100vh;
     overflow: hidden;
+}
+
+/* Ensure proper scrolling on mobile */
+@media (max-width: 768px) {
+    .app-container {
+        height: auto;
+        min-height: 100vh;
+        max-height: none;
+    }
 }
 
 /* Professional Header */
@@ -657,72 +667,226 @@ body {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    /* CRITICAL: Stack panels vertically on mobile */
+    .main-content {
+        flex-direction: column;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .preview-panel {
+        width: 100%;
+        min-height: 400px;
+        max-height: 60vh;
+        border-bottom: 1px solid var(--light-border);
+    }
+
+    .controls-panel {
+        width: 100%;
+        max-height: none;
+    }
+
     .header-content {
         padding: 1rem;
     }
-    
+
     .brand-tag {
         display: none;
     }
-    
+
     .logo span {
         font-size: 1.25rem;
     }
-    
+
     .ad-footer {
         padding: 0.75rem 1rem;
     }
-    
+
     .panel-header {
         padding: 1rem;
+        flex-wrap: wrap;
+        gap: 0.75rem;
     }
-    
+
+    .panel-header-left {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .panel-header h2 {
+        font-size: 1.25rem;
+    }
+
     .canvas-container {
         padding: 1rem;
     }
-    
+
     .preview-wrapper {
         padding: 20px;
     }
-    
+
     .tweet-card {
         max-width: 280px;
         height: 280px;
     }
-    
+
     .control-section {
         padding: 1rem;
     }
-    
+
     .background-options {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .bg-tabs {
+        gap: 0.5rem;
+    }
+
+    .bg-tab {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.875rem;
+    }
+
+    /* Ensure inputs are visible and accessible */
+    .url-input {
+        font-size: 16px; /* Prevent iOS zoom */
+    }
+
+    .convert-btn,
+    .download-btn {
+        width: 100%;
+        min-height: 48px;
     }
 }
 
 @media (max-width: 480px) {
+    .preview-panel {
+        min-height: 350px;
+        max-height: 50vh;
+    }
+
     .preview-wrapper {
         padding: 15px;
     }
-    
+
     .tweet-card {
         max-width: 260px;
         height: 260px;
         padding: 1rem;
     }
-    
+
     .tweet-avatar {
         width: 36px;
         height: 36px;
     }
-    
+
     .tweet-content {
         font-size: 0.8rem;
         -webkit-line-clamp: 5;
     }
-    
+
     .panel-header .download-btn {
         padding: 0.5rem 1rem;
         font-size: 0.85rem;
+    }
+
+    .background-options {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .panel-header h2 {
+        font-size: 1.1rem;
+    }
+}
+
+/* Ultra-narrow devices (like Sony Xperia 21:9, Galaxy Fold cover screen) */
+@media (max-width: 400px) {
+    .app-container {
+        overflow-y: auto;
+    }
+
+    .preview-panel {
+        min-height: 300px;
+        max-height: 45vh;
+    }
+
+    .canvas-container {
+        padding: 0.75rem;
+    }
+
+    .tweet-card {
+        max-width: 240px;
+        height: 240px;
+        padding: 0.875rem;
+    }
+
+    .panel-header {
+        padding: 0.75rem;
+    }
+
+    .panel-header h2 {
+        font-size: 1rem;
+    }
+
+    .control-section {
+        padding: 0.875rem;
+    }
+
+    .background-options {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+
+    .background-option {
+        padding: 0.5rem;
+    }
+
+    .bg-preview {
+        width: 50px;
+        height: 50px;
+    }
+
+    .bg-label {
+        font-size: 0.75rem;
+    }
+}
+
+/* Support for ultra-tall aspect ratios (21:9 and taller) */
+@media (max-aspect-ratio: 9/21) {
+    .preview-panel {
+        max-height: 40vh !important;
+        min-height: 250px !important;
+    }
+
+    .controls-panel {
+        flex: 1;
+    }
+}
+
+/* Landscape mode on narrow devices */
+@media (max-width: 768px) and (orientation: landscape) {
+    .main-content {
+        flex-direction: row;
+    }
+
+    .preview-panel {
+        width: 50%;
+        max-height: none;
+        border-right: 1px solid var(--light-border);
+        border-bottom: none;
+    }
+
+    .controls-panel {
+        width: 50%;
+    }
+
+    .canvas-container {
+        padding: 0.75rem;
+    }
+
+    .tweet-card {
+        max-width: 200px;
+        height: 200px;
     }
 }
 
