@@ -147,14 +147,6 @@ document.addEventListener('DOMContentLoaded', () => {
         row.querySelector('.description-field').addEventListener('input', debouncedUpdate);
 
         removeBtn.addEventListener('click', () => {
-            const itemCount = itemList.querySelectorAll('.item-row').length;
-
-            // Prevent deletion if only 1 item remains
-            if (itemCount <= 1) {
-                alert('You must have at least one item in the invoice.');
-                return;
-            }
-
             row.remove();
             updatePreview();
         });
@@ -224,6 +216,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Initial Setup ---
     invoiceDateInput.valueAsDate = new Date(); // Set current date
-    addRow(); // Add first item row
     updatePreview(); // Initial preview render
 });
