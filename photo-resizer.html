@@ -29,7 +29,107 @@
         .preview-info { margin-top: 0.5rem; font-size: 0.875rem; }
         .action-btn { padding: 1rem; font-size: 1.125rem; font-weight: 700; background: var(--primary-color); color: white; border: none; border-radius: 8px; cursor: pointer; transition: background 0.3s ease; }
         .action-btn.secondary { background: var(--hover-bg); color: var(--text-primary); border: 1px solid var(--border-color); }
-        @media (max-width: 768px) { .processing-grid.active { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) {
+            .resizer-container {
+                padding: 0 0.5rem;
+            }
+
+            .tool-section {
+                padding: 1.5rem 1rem;
+            }
+
+            .processing-grid.active {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            /* Center align controls on mobile */
+            .controls-col {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .preset-group,
+            .quality-group {
+                width: 100%;
+                max-width: 400px;
+            }
+
+            .preset-group label,
+            .quality-group label {
+                text-align: center;
+            }
+
+            .preset-select,
+            .quality-slider {
+                font-size: 16px; /* Prevent iOS zoom */
+            }
+
+            .action-btn {
+                width: 100%;
+                max-width: 400px;
+            }
+
+            .tabs {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+            }
+
+            .tabs::-webkit-scrollbar {
+                display: none;
+            }
+
+            .tab-button {
+                flex-shrink: 0;
+                padding: 0.875rem 1.25rem;
+                font-size: 0.95rem;
+            }
+
+            .upload-area {
+                padding: 2rem 1rem;
+            }
+
+            .preview-box {
+                padding: 0.875rem;
+            }
+
+            .preview-image {
+                max-height: 250px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tool-section {
+                padding: 1.25rem 0.75rem;
+            }
+
+            .tab-button {
+                padding: 0.75rem 1rem;
+                font-size: 0.875rem;
+            }
+
+            .upload-area {
+                padding: 1.5rem 0.75rem;
+            }
+
+            .upload-area h3 {
+                font-size: 1.125rem;
+            }
+
+            .preset-group,
+            .quality-group,
+            .action-btn {
+                max-width: 100%;
+            }
+
+            .preview-image {
+                max-height: 200px;
+            }
+        }
     </style>
 </head>
 <body>
