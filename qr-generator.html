@@ -7,6 +7,12 @@
     <meta name="description" content="Create custom QR codes online for free. Generate QR codes for URLs, text, WiFi, email, and more. Customize colors and download as PNG or SVG.">
     <link rel="stylesheet" href="tools.css">
     <style>
+        /* Prevent horizontal scroll on mobile */
+        html, body {
+            overflow-x: hidden;
+            max-width: 100%;
+        }
+
         /* Page-specific styles */
         .qr-container {
             max-width: 1200px;
@@ -20,6 +26,98 @@
         @media (max-width: 768px) {
             .qr-container {
                 grid-template-columns: 1fr;
+                padding: 0 0.5rem;
+                margin: 1rem auto;
+            }
+
+            .input-panel, .output-panel {
+                padding: 1.5rem 1rem;
+                overflow-x: hidden;
+            }
+
+            .input-tabs {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+                flex-wrap: nowrap;
+            }
+
+            .input-tabs::-webkit-scrollbar {
+                display: none;
+            }
+
+            .tab-button {
+                flex-shrink: 0;
+                padding: 0.75rem 0.875rem;
+                font-size: 0.875rem;
+                white-space: nowrap;
+            }
+
+            .qr-options {
+                padding: 1rem;
+                margin-top: 1.5rem;
+            }
+
+            .options-title {
+                font-size: 0.95rem;
+            }
+
+            .color-input-group {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .error-correction-group {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 0.5rem;
+            }
+
+            .error-level-btn {
+                font-size: 0.8rem;
+                padding: 0.625rem 0.75rem;
+                white-space: nowrap;
+            }
+
+            .qr-display {
+                padding: 1.5rem 1rem;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .qr-canvas {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .download-options {
+                flex-direction: column;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .qr-container {
+                padding: 0 0.25rem;
+            }
+
+            .input-panel, .output-panel {
+                padding: 1.25rem 0.875rem;
+                border-radius: 8px;
+            }
+
+            .tab-button {
+                padding: 0.625rem 0.75rem;
+                font-size: 0.8rem;
+            }
+
+            .error-correction-group {
+                grid-template-columns: 1fr;
+            }
+
+            .error-level-btn {
+                width: 100%;
             }
         }
 
