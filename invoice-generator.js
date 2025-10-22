@@ -30,28 +30,38 @@ document.addEventListener('DOMContentLoaded', () => {
         updateTimeout = setTimeout(() => updatePreview(), 150);
     }
 
-    function updatePreview() {
-        let itemsHtml = '';
+    // Recalculate totals from scratch - don't trust DOM
+    function calculateTotals() {
         let subtotal = 0;
+        const items = [];
 
         itemList.querySelectorAll('.item-row').forEach(row => {
-            const description = row.querySelector('.description-field').value;
-            const quantity = parseFloat(row.querySelector('.quantity-field').value) || 0;
-            const price = parseFloat(row.querySelector('.price-field').value) || 0;
+            const description = row.querySelector('.description-field').value.trim();
+            const quantity = Math.max(0, parseFloat(row.querySelector('.quantity-field').value) || 0);
+            const price = Math.max(0, parseFloat(row.querySelector('.price-field').value) || 0);
             const total = quantity * price;
-            subtotal += total;
 
+            subtotal += total;
+            items.push({ description, quantity, price, total });
+        });
+
+        return { items, subtotal, grandTotal: subtotal };
+    }
+
+    function updatePreview() {
+        const { items, subtotal, grandTotal } = calculateTotals();
+        let itemsHtml = '';
+
+        items.forEach(item => {
             itemsHtml += `
                 <tr>
-                    <td>${description}</td>
-                    <td>${quantity}</td>
-                    <td>${formatCurrency(price)}</td>
-                    <td class="total-col">${formatCurrency(total)}</td>
+                    <td>${item.description || 'N/A'}</td>
+                    <td>${item.quantity}</td>
+                    <td>${formatCurrency(item.price)}</td>
+                    <td class="total-col">${formatCurrency(item.total)}</td>
                 </tr>
             `;
         });
-
-        const grandTotal = subtotal; // For simplicity, no tax/discount in MVP
 
         invoicePreviewArea.innerHTML = `
             <div class="invoice-header-preview">
@@ -114,10 +124,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const row = document.createElement('div');
         row.className = 'item-row';
         row.innerHTML = `
-            <input type="text" class="description-field" placeholder="Description">
-            <input type="number" class="quantity-field" value="1" min="0">
-            <input type="number" class="price-field" value="0.00" min="0" step="0.01">
-            <input type="text" class="total-field" value="0.00" readonly>
+            <input type="text" class="description-field" placeholder="Description" maxlength="200">
+            <input type="number" class="quantity-field" value="1" min="0" max="999999" step="1">
+            <input type="number" class="price-field" value="0.00" min="0" max="99999999" step="0.01">
+            <input type="text" class="total-field" value="0.00" readonly tabindex="-1">
             <button class="remove-item-btn" title="Delete item">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
