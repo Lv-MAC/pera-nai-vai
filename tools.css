@@ -704,7 +704,7 @@ body {
 }
 
 [data-theme="dark"] .wardrobe-header h2 {
-    color: #DC2626;
+    color: var(--text-primary);
 }
 
 [data-theme="dark"] .wardrobe-grid .tool-card {
@@ -712,15 +712,15 @@ body {
 }
 
 [data-theme="dark"] .wardrobe-grid .tool-card h3 {
-    color: #DC2626;
+    color: var(--text-primary);
 }
 
 [data-theme="dark"] .wardrobe-grid .tool-card p {
-    color: #EF4444;
+    color: var(--text-secondary);
 }
 
 [data-theme="dark"] .wardrobe-close-btn {
-    color: #DC2626;
+    color: var(--text-primary);
 }
 
 [data-theme="dark"] .wardrobe-grid .tool-card .tool-icon {
