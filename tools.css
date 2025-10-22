@@ -643,7 +643,7 @@ body {
 .wardrobe-header h2 {
     font-size: 2rem;
     text-align: center;
-    color: #000000;
+    color: var(--text-primary);
 }
 
 .wardrobe-filters {
@@ -660,6 +660,7 @@ body {
     border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
+    color: var(--text-primary);
 }
 
 .filter-tag:hover {
@@ -687,11 +688,11 @@ body {
 }
 
 .wardrobe-grid .tool-card h3 {
-    color: #000000;
+    color: var(--text-primary);
 }
 
 .wardrobe-grid .tool-card p {
-    color: #4b5563;
+    color: var(--text-secondary);
 }
 
 .wardrobe-grid .tool-card .tool-icon {
