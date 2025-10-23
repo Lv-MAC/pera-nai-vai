@@ -663,6 +663,16 @@ body {
     color: var(--text-primary);
 }
 
+/* Dark mode base - remove white background */
+[data-theme="dark"] .filter-tag,
+html[data-theme="dark"] .filter-tag,
+body.dark-theme .filter-tag,
+.dark-theme .filter-tag {
+    background: transparent;
+    color: var(--text-primary);
+    border-color: #404040;
+}
+
 .filter-tag:hover:not(.active) {
     background: #404040 !important;
     color: white !important;
