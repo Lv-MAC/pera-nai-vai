@@ -663,8 +663,10 @@ body {
     color: var(--text-primary);
 }
 
-.filter-tag:hover {
-    background: var(--hover-bg);
+.filter-tag:hover:not(.active) {
+    background: #404040;
+    color: white;
+    border-color: #404040;
 }
 
 .filter-tag.active {
