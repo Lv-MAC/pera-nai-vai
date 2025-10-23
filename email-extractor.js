@@ -144,23 +144,88 @@ class EmailExtractor {
         }
     }
 
-    processFile(file) {
-        const reader = new FileReader();
+    async processFile(file) {
+        // File size validation - 10MB limit
+        const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB in bytes
 
-        reader.onload = (e) => {
-            const content = e.target.result;
+        if (file.size > MAX_FILE_SIZE) {
+            const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+            alert(`File size (${fileSizeMB}MB) exceeds the 10MB limit. Please choose a smaller file.`);
+            this.fileInput.value = ''; // Clear the file input
+            return;
+        }
+
+        // Show loading state
+        this.extractBtn.classList.add('loading');
+        this.extractBtn.querySelector('span').textContent = 'Processing file...';
+
+        try {
+            let content = '';
+
+            // Check file type
+            if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
+                // Parse PDF
+                content = await this.parsePDF(file);
+            } else {
+                // Parse as text
+                content = await this.readTextFile(file);
+            }
+
             this.textInput.value = content;
             // Switch to text view to show the content
             this.switchMethod('text');
+
+            // Extract emails after loading
             this.extractEmails();
-        };
+        } catch (error) {
+            console.error('Error processing file:', error);
+            alert('Error reading file. Please try again or paste the text manually.');
+        } finally {
+            // Reset button state
+            this.extractBtn.classList.remove('loading');
+            this.extractBtn.querySelector('span').textContent = 'Extract Email Addresses';
+        }
+    }
 
-        reader.onerror = () => {
-            alert('Error reading file');
-        };
+    readTextFile(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
 
-        // Read as text
-        reader.readAsText(file);
+            reader.onload = (e) => resolve(e.target.result);
+            reader.onerror = () => reject(new Error('Failed to read text file'));
+
+            reader.readAsText(file);
+        });
+    }
+
+    async parsePDF(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+
+            reader.onload = async (e) => {
+                try {
+                    const typedArray = new Uint8Array(e.target.result);
+                    const pdf = await pdfjsLib.getDocument({ data: typedArray }).promise;
+
+                    let fullText = '';
+
+                    // Extract text from all pages
+                    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                        const page = await pdf.getPage(pageNum);
+                        const textContent = await page.getTextContent();
+                        const pageText = textContent.items.map(item => item.str).join(' ');
+                        fullText += pageText + '\n';
+                    }
+
+                    resolve(fullText);
+                } catch (error) {
+                    reject(new Error('Failed to parse PDF: ' + error.message));
+                }
+            };
+
+            reader.onerror = () => reject(new Error('Failed to read PDF file'));
+            reader.readAsArrayBuffer(file);
+        });
     }
 
     loadSampleText() {

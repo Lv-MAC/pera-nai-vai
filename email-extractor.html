@@ -6,6 +6,12 @@
     <title>Email Extractor Tool | Pera nai Vai</title>
     <meta name="description" content="Extract email addresses from any text or file. Paste your text and instantly get a clean list of all emails. Free and works in your browser.">
     <link rel="stylesheet" href="tools.css">
+    <!-- PDF.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        // Configure PDF.js worker
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    </script>
     <style>
         /* Page-specific styles */
         .extractor-container {
@@ -106,6 +112,9 @@
             cursor: pointer;
             transition: background 0.3s ease;
             margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .extract-btn:hover {
@@ -115,6 +124,30 @@
         .extract-btn:disabled {
             background: var(--border-color);
             cursor: not-allowed;
+        }
+
+        .extract-btn.loading {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .extract-btn .spinner {
+            display: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            margin-right: 0.5rem;
+        }
+
+        .extract-btn.loading .spinner {
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         .stats-card {
@@ -394,11 +427,13 @@ Sales inquiries: sales@business.net"></textarea>
                         <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
                     </svg>
                     <p>Drop your file here or click to browse</p>
-                    <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.5rem;">Supported: TXT, CSV, HTML, DOC, PDF</p>
-                    <input type="file" id="file-input" style="display: none;" accept=".txt,.csv,.html,.htm,.doc,.docx,.pdf">
+                    <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.5rem;">Supported: TXT, PDF</p>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;"><strong>Max file size: 10MB</strong></p>
+                    <input type="file" id="file-input" style="display: none;" accept=".txt,.pdf">
                 </div>
 
                 <button class="extract-btn" id="extract-btn">
+                    <div class="spinner"></div>
                     <span>Extract Email Addresses</span>
                 </button>
             </div>
