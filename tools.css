@@ -664,9 +664,9 @@ body {
 }
 
 .filter-tag:hover:not(.active) {
-    background: #404040;
-    color: white;
-    border-color: #404040;
+    background: #404040 !important;
+    color: white !important;
+    border-color: #404040 !important;
 }
 
 .filter-tag.active {
