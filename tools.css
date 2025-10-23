@@ -671,6 +671,8 @@ body {
 
 /* Dark mode hover - lighter grey for contrast */
 [data-theme="dark"] .filter-tag:hover:not(.active),
+html[data-theme="dark"] .filter-tag:hover:not(.active),
+body.dark-theme .filter-tag:hover:not(.active),
 .dark-theme .filter-tag:hover:not(.active) {
     background: #525252 !important;
     color: white !important;
