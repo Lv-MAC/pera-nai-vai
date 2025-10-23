@@ -1529,6 +1529,14 @@ body {
     margin: 0.25rem 0;
 }
 
+.qr-code-image {
+    width: 240px;
+    height: auto;
+    border-radius: 12px;
+    border: 2px solid var(--border-color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 .mobile-number {
     display: flex;
     flex-direction: column;
@@ -1608,6 +1616,10 @@ body.dark-theme .donate-modal-content,
     .qr-code-placeholder {
         width: 160px;
         height: 160px;
+    }
+
+    .qr-code-image {
+        width: 180px;
     }
 
     .number-copy-container {
