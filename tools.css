@@ -669,6 +669,14 @@ body {
     border-color: #404040 !important;
 }
 
+/* Dark mode hover - lighter grey for contrast */
+[data-theme="dark"] .filter-tag:hover:not(.active),
+.dark-theme .filter-tag:hover:not(.active) {
+    background: #525252 !important;
+    color: white !important;
+    border-color: #525252 !important;
+}
+
 .filter-tag.active {
     background: var(--primary-color);
     color: white;
