@@ -664,10 +664,10 @@ body {
 }
 
 /* Dark mode base - remove white background */
-[data-theme="dark"] .filter-tag,
-html[data-theme="dark"] .filter-tag,
-body.dark-theme .filter-tag,
-.dark-theme .filter-tag {
+[data-theme="dark"] .filter-tag:not(.active),
+html[data-theme="dark"] .filter-tag:not(.active),
+body.dark-theme .filter-tag:not(.active),
+.dark-theme .filter-tag:not(.active) {
     background: transparent;
     color: var(--text-primary);
     border-color: #404040;
@@ -690,9 +690,19 @@ body.dark-theme .filter-tag:hover:not(.active),
 }
 
 .filter-tag.active {
-    background: var(--primary-color);
-    color: white;
-    border-color: var(--primary-color);
+    background: var(--primary-color) !important;
+    color: white !important;
+    border-color: var(--primary-color) !important;
+}
+
+/* Ensure active stays red in dark mode too */
+[data-theme="dark"] .filter-tag.active,
+html[data-theme="dark"] .filter-tag.active,
+body.dark-theme .filter-tag.active,
+.dark-theme .filter-tag.active {
+    background: var(--primary-color) !important;
+    color: white !important;
+    border-color: var(--primary-color) !important;
 }
 
 .wardrobe-grid {
