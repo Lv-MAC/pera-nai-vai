@@ -429,7 +429,52 @@
         </footer>
     </div>
 
+    <!-- Floating Donate Button -->
+    <button id="donate-btn" class="floating-donate-btn" title="Support Us">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+    </button>
+
+    <!-- Donation Modal -->
+    <div id="donate-modal" class="donate-modal">
+        <div class="donate-modal-content">
+            <button class="donate-modal-close" id="close-donate-modal">&times;</button>
+            <h2>Support Pera nai Vai</h2>
+            <p>Your support helps us keep these tools free for everyone!</p>
+
+            <div class="donate-info">
+                <div class="payment-method">
+                    <div class="bkash-logo">bKash</div>
+                </div>
+
+                <div class="qr-code-container">
+                    <div class="qr-code-placeholder">
+                        <p>QR Code</p>
+                        <p style="font-size: 0.75rem; opacity: 0.7;">Scan to donate</p>
+                    </div>
+                </div>
+
+                <div class="mobile-number">
+                    <label>Mobile Number:</label>
+                    <div class="number-copy-container">
+                        <input type="text" id="donate-number" value="01789654382" readonly>
+                        <button id="copy-number-btn" class="copy-number-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                            </svg>
+                            Copy
+                        </button>
+                    </div>
+                </div>
+
+                <p class="thank-you-message">Thank you for your support! ❤️</p>
+            </div>
+        </div>
+    </div>
+
     <script type="module" src="theme.js"></script>
     <script type="module" src="category-filter.js"></script>
+    <script type="module" src="donate.js"></script>
 </body>
 </html>
