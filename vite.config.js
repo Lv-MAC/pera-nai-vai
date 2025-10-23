@@ -17,6 +17,7 @@ export default defineConfig({
         'land-converter': resolve(__dirname, 'land-converter.html'),
         'mfs-helper': resolve(__dirname, 'mfs-helper.html'),
         'financial-calculators': resolve(__dirname, 'financial-calculators.html'),
+        'bd-tax-calculator': resolve(__dirname, 'bd-tax-calculator.html'),
       },
     },
   },
