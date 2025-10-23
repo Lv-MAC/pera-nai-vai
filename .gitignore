@@ -29,3 +29,4 @@ dist-ssr
 # Temporary files
 nul
 temp_msg.txt
+.vercel

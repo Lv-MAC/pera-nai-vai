@@ -7,6 +7,8 @@ class ColorPaletteExtractor {
         this.currentImage = null;
         this.extractedColors = [];
         this.selectedColor = null;
+        this.colorLocationMap = new Map(); // Store pixel locations for each color
+        this.heatmapScale = 1; // Store scale factor for heatmap
 
         this.initializeElements();
         this.attachEventListeners();
@@ -39,6 +41,24 @@ class ColorPaletteExtractor {
 
         // Copy indicator
         this.copyIndicator = document.getElementById('copy-indicator');
+
+        // Heatmap elements
+        this.referenceCanvas = document.getElementById('reference-canvas');
+        this.heatmapCanvas = document.getElementById('heatmap-canvas');
+        this.heatmapOverlay = document.getElementById('heatmap-overlay');
+        this.heatmapInfo = document.getElementById('heatmap-info');
+        this.selectedColorPreview = document.getElementById('selected-color-preview');
+        this.selectedColorName = document.getElementById('selected-color-name');
+        this.selectedColorHex = document.getElementById('selected-color-hex');
+        this.selectedColorCoverage = document.getElementById('selected-color-coverage');
+
+        if (this.referenceCanvas) {
+            this.referenceCtx = this.referenceCanvas.getContext('2d');
+        }
+        if (this.heatmapCanvas && this.heatmapOverlay) {
+            this.heatmapCtx = this.heatmapCanvas.getContext('2d');
+            this.overlayCtx = this.heatmapOverlay.getContext('2d');
+        }
     }
 
     attachEventListeners() {
@@ -233,9 +253,12 @@ class ColorPaletteExtractor {
             const imageData = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
             const pixels = imageData.data;
 
-        // Simple color extraction algorithm (quantization)
+        // Simple color extraction algorithm (quantization) with location tracking
         const colorMap = {};
+        const colorLocations = new Map(); // Track pixel locations for each color
         const sampleRate = Math.max(1, Math.floor(pixels.length / 40000)); // Sample pixels
+        const width = this.canvas.width;
+        const height = this.canvas.height;
 
         for (let i = 0; i < pixels.length; i += sampleRate * 4) {
             const r = Math.round(pixels[i] / 32) * 32;
@@ -244,6 +267,16 @@ class ColorPaletteExtractor {
 
             const key = `${r},${g},${b}`;
             colorMap[key] = (colorMap[key] || 0) + 1;
+
+            // Store pixel location (convert linear index to x, y coordinates)
+            const pixelIndex = i / 4;
+            const x = pixelIndex % width;
+            const y = Math.floor(pixelIndex / width);
+
+            if (!colorLocations.has(key)) {
+                colorLocations.set(key, []);
+            }
+            colorLocations.get(key).push({ x, y });
         }
 
         // Sort colors by frequency
@@ -252,18 +285,24 @@ class ColorPaletteExtractor {
             .slice(0, colorCount)
             .map(([color, count]) => {
                 const [r, g, b] = color.split(',').map(Number);
+                const hex = this.rgbToHex(r, g, b);
                 return {
                     rgb: { r, g, b },
-                    hex: this.rgbToHex(r, g, b),
+                    hex: hex,
                     hsl: this.rgbToHsl(r, g, b),
                     percentage: (count / (pixels.length / 4 / sampleRate) * 100).toFixed(1),
-                    name: this.getColorName(r, g, b)
+                    name: this.getColorName(r, g, b),
+                    locations: colorLocations.get(color) || []
                 };
             });
+
+        // Store color locations for heatmap
+        this.colorLocationMap = colorLocations;
 
             this.extractedColors = sortedColors;
             this.displayPalette();
             this.displayHarmonies();
+            this.initializeHeatmap();
             this.resultsSection.classList.add('active');
 
             // Re-enable button and show success state
@@ -307,6 +346,7 @@ class ColorPaletteExtractor {
             card.addEventListener('click', () => {
                 this.selectedColor = color;
                 this.displayVariations(color);
+                this.displayColorHeatmap(color);
                 this.showCopyIndicator();
             });
 
@@ -520,6 +560,103 @@ class ColorPaletteExtractor {
             colors.push(this.rgbToHex(rgb.r, rgb.g, rgb.b));
         });
         return colors;
+    }
+
+    // Heatmap functions
+    initializeHeatmap() {
+        if (!this.heatmapCanvas || !this.referenceCanvas || !this.currentImage) {
+            return;
+        }
+
+        // Set canvas dimensions to match the image (max width for display)
+        const maxWidth = 600;
+        this.heatmapScale = Math.min(1, maxWidth / this.currentImage.width);
+
+        const displayWidth = this.currentImage.width * this.heatmapScale;
+        const displayHeight = this.currentImage.height * this.heatmapScale;
+
+        // Set reference canvas (left side - original image)
+        this.referenceCanvas.width = displayWidth;
+        this.referenceCanvas.height = displayHeight;
+        this.referenceCtx.drawImage(
+            this.currentImage,
+            0, 0,
+            displayWidth,
+            displayHeight
+        );
+
+        // Set heatmap canvas (right side - will show color highlights)
+        this.heatmapCanvas.width = displayWidth;
+        this.heatmapCanvas.height = displayHeight;
+        this.heatmapCtx.drawImage(
+            this.currentImage,
+            0, 0,
+            displayWidth,
+            displayHeight
+        );
+
+        // Set overlay canvas dimensions to match
+        this.heatmapOverlay.width = displayWidth;
+        this.heatmapOverlay.height = displayHeight;
+    }
+
+    displayColorHeatmap(color) {
+        if (!this.overlayCtx || !color.locations || color.locations.length === 0) {
+            return;
+        }
+
+        // Clear previous overlay
+        this.overlayCtx.clearRect(0, 0, this.heatmapOverlay.width, this.heatmapOverlay.height);
+
+        // Calculate scale factor between extraction canvas and display canvas
+        const scaleX = this.heatmapCanvas.width / this.canvas.width;
+        const scaleY = this.heatmapCanvas.height / this.canvas.height;
+
+        // Draw semi-transparent overlay to darken non-selected areas
+        this.overlayCtx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+        this.overlayCtx.fillRect(0, 0, this.heatmapOverlay.width, this.heatmapOverlay.height);
+
+        // Set blend mode to clear selected color areas
+        this.overlayCtx.globalCompositeOperation = 'destination-out';
+        this.overlayCtx.fillStyle = 'rgba(255, 255, 255, 1)';
+
+        // Highlight the selected color pixels with glow effect
+        const brushSize = Math.max(3, Math.floor(5 * scaleX));
+
+        color.locations.forEach(location => {
+            const x = location.x * scaleX;
+            const y = location.y * scaleY;
+
+            this.overlayCtx.beginPath();
+            this.overlayCtx.arc(x, y, brushSize, 0, Math.PI * 2);
+            this.overlayCtx.fill();
+        });
+
+        // Reset composite operation
+        this.overlayCtx.globalCompositeOperation = 'source-over';
+
+        // Add a subtle highlight border around the color regions
+        this.overlayCtx.strokeStyle = color.hex;
+        this.overlayCtx.lineWidth = 2;
+        this.overlayCtx.globalAlpha = 0.5;
+
+        color.locations.forEach(location => {
+            const x = location.x * scaleX;
+            const y = location.y * scaleY;
+
+            this.overlayCtx.beginPath();
+            this.overlayCtx.arc(x, y, brushSize + 1, 0, Math.PI * 2);
+            this.overlayCtx.stroke();
+        });
+
+        this.overlayCtx.globalAlpha = 1;
+
+        // Update legend
+        this.heatmapInfo.classList.remove('hidden');
+        this.selectedColorPreview.style.backgroundColor = color.hex;
+        this.selectedColorName.textContent = color.name;
+        this.selectedColorHex.textContent = color.hex;
+        this.selectedColorCoverage.textContent = color.percentage + '%';
     }
 
     // Export functions

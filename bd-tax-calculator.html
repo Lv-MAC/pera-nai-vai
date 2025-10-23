@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bangladesh Income Tax Calculator 2025-26 | Pera nai Vai</title>
+    <meta name="description" content="Free Bangladesh income tax calculator for Assessment Year 2025-26. Calculate your tax liability with salary exemptions, investment rebates, and regional minimum tax. Accurate and up-to-date with NBR rules.">
+    <link rel="stylesheet" href="tools.css">
+    <link rel="stylesheet" href="components.css">
+</head>
+<body>
+    <div class="site-container">
+        <!-- Header -->
+        <header class="site-header">
+            <div class="header-content">
+                <a href="index.html" class="logo" style="text-decoration: none; color: inherit;">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
+                    </svg>
+                    <span>Pera nai Vai</span>
+                </a>
+                <nav class="main-nav"></nav>
+                <div class="header-actions">
+                    <button class="burger-menu" id="burger-menu">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+                        <span>Menu</span>
+                    </button>
+                    <button id="theme-toggle" class="theme-toggle" title="Toggle dark mode">
+                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 512 512" fill="currentColor"><circle cx="256" cy="255.868" r="135"/><path d="m256 0c-8.291 0-15 6.709-15 15v60.868c0 8.291 6.709 15 15 15s15-6.709 15-15v-60.868c0-8.291-6.709-15-15-15zm0 420.868c-8.291 0-15 6.709-15 15v61.132c0 8.291 6.709 15 15 15s15-6.709 15-15v-61.132c0-8.291-6.709-15-15-15zm-165-165c0-8.291-6.709-15-15-15h-61c-8.291 0-15 6.709-15 15s6.709 15 15 15h61c8.291 0 15-6.709 15-15zm406-15h-61c-8.291 0-15 6.709-15 15s6.709 15 15 15h61c8.291 0 15-6.709 15-15s-6.709-15-15-15zm-400.097-165.307c-5.859-5.859-15.352-5.859-21.211 0s-5.859 15.352 0 21.211l42.422 42.422c5.86 5.859 15.352 5.859 21.211 0s5.859-15.352 0-21.211zm296.983 296.982c-5.859-5.859-15.352-5.859-21.211 0s-5.859 15.352 0 21.211l42.422 42.422c5.86 5.859 15.352 5.859 21.211 0s5.859-15.352 0-21.211zm-275.772 0-42.422 42.422c-5.859 5.859-5.859 15.352 0 21.211 5.86 5.859 15.352 5.859 21.211 0l42.422-42.422c5.859-5.859 5.859-15.352 0-21.211s-15.351-5.859-21.211 0zm275.772-233.35 42.422-42.422c5.859-5.859 5.859-15.352 0-21.211s-15.352-5.859-21.211 0l-42.422 42.422c-5.859 5.859-5.859 15.352 0 21.211 5.859 5.86 15.352 5.86 21.211 0z"/></svg>
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 512 512" fill="currentColor" style="display: none;"><path d="m499.277 308.658c-5.687-3.527-13.022-2.86-17.98 1.634-36.074 32.7-82.48 50.708-130.67 50.708-107.523 0-195-87.477-195-195 0-48.189 18.009-94.595 50.708-130.67 4.494-4.958 5.161-12.293 1.634-17.98-3.526-5.687-10.394-8.35-16.832-6.528-105.69 29.911-185.51 127.121-185.51 245.178 0 141.159 114.393 256 255 256 117.121 0 215.005-79.893 245.177-186.51 1.823-6.439-.84-13.306-6.527-16.832zm-238.65 173.342c-124.065 0-225-101.383-225-226 0-83.209 46.524-158.722 117.59-197.495-17.992 32.799-27.59 69.666-27.59 107.495 0 124.065 100.935 225 225 225 37.877 0 74.783-9.619 107.613-27.654-38.809 71.695-114.409 118.654-197.613 118.654zm90-392c24.813 0 45 20.187 45 45 0 8.284 6.716 15 15 15s15-6.716 15-15c0-24.813 20.187-45 45-45 8.284 0 15-6.716 15-15s-6.716-15-15-15c-24.813 0-45-20.187-45-45 0-8.284-6.716-15-15-15s-15 6.716-15 15c0 24.813-20.187 45-45 45-8.284 0-15 6.716-15 15s6.716 15 15 15zm60-30.047c4.279 5.698 9.35 10.768 15.047 15.047-5.698 4.28-10.768 9.349-15.047 15.047-4.279-5.698-9.35-10.768-15.047-15.047 5.698-4.28 10.768-9.349 15.047-15.047zm-150 181.047c24.813 0 45 20.187 45 45 0 8.284 6.716 15 15 15s15-6.716 15-15c0-24.813 20.187-45 45-45 8.284 0 15-6.716 15-15s-6.716-15-15-15c-24.813 0-45-20.187-45-45 0-8.284-6.716-15-15-15s-15 6.716-15 15c0 24.813-20.187 45-45 45-8.284 0-15 6.716-15 15s6.716 15 15 15zm60-30.047c4.279 5.698 9.35 10.768 15.047 15.047-5.698 4.28-10.768 9.35-15.047 15.047-4.279-5.698-9.35-10.768-15.047-15.047 5.698-4.28 10.768-9.35 15.047-15.047z"/></svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Wardrobe Menu -->
+        <div class="wardrobe-overlay" id="wardrobe-overlay">
+            <div class="wardrobe-menu">
+                <button class="wardrobe-close-btn" id="wardrobe-close-btn">&times;</button>
+                <div class="wardrobe-header">
+                    <h2>All Tools</h2>
+                </div>
+                <div class="wardrobe-filters"></div>
+                <div class="wardrobe-grid" id="wardrobe-grid"></div>
+            </div>
+        </div>
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>Bangladesh Income Tax Calculator</h1>
+            <p>Calculate your income tax for Assessment Year 2025-26 (Income Year 2024-25) with accurate NBR tax slabs, salary exemptions, investment rebates, and regional minimum tax rules.</p>
+        </div>
+
+        <!-- Main Content - Single Column Layout -->
+        <div class="tool-container-single">
+            <!-- Personal Information Section -->
+            <div class="panel-section">
+                <h2 class="mb-3">Personal Information</h2>
+
+                <div class="input-group">
+                    <label class="input-label">Taxpayer Category</label>
+                    <div class="flex gap-2" style="flex-wrap: wrap;">
+                        <button class="btn-small active" data-category="general">General</button>
+                        <button class="btn-small" data-category="female">Female</button>
+                        <button class="btn-small" data-category="senior">Senior (65+)</button>
+                        <button class="btn-small" data-category="disabled">Disabled</button>
+                        <button class="btn-small" data-category="freedom-fighter">Freedom Fighter</button>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="region">Region (for Minimum Tax)</label>
+                    <select id="region" class="input-field">
+                        <option value="dhaka">Dhaka City Corporation</option>
+                        <option value="chittagong">Chittagong City Corporation</option>
+                        <option value="other-city">Other City Corporations</option>
+                        <option value="non-city">Non-City Corporation Area</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Income Section -->
+            <div class="panel-section">
+                <h2 class="mb-3">Income Details</h2>
+
+                <div class="input-group">
+                    <label class="input-label" for="salary-income">Salary Income (Annual)</label>
+                    <input type="number" id="salary-income" class="input-field" placeholder="Enter annual salary" value="0" min="0">
+                    <span class="input-helper">Gross salary including basic, allowances, and bonuses</span>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="business-income">Business/Professional Income (Annual)</label>
+                    <input type="number" id="business-income" class="input-field" placeholder="Enter business income" value="0" min="0">
+                    <span class="input-helper">Net income from business or professional activities</span>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="other-income">Other Income (Annual)</label>
+                    <input type="number" id="other-income" class="input-field" placeholder="Enter other income" value="0" min="0">
+                    <span class="input-helper">Income from other sources (interest, dividends, etc.)</span>
+                </div>
+            </div>
+
+            <!-- Investment Section -->
+            <div class="panel-section">
+                <h2 class="mb-3">Investment for Tax Rebate</h2>
+
+                <div class="input-group">
+                    <label class="input-label" for="investment-amount">Investment Amount (Annual)</label>
+                    <input type="number" id="investment-amount" class="input-field" placeholder="Enter investment amount" value="0" min="0">
+                    <span class="input-helper">Life insurance, DPS, provident fund, stock market, savings certificates, etc.</span>
+                </div>
+
+                <div class="options-panel">
+                    <h3 class="options-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                        </svg>
+                        Eligible Investments
+                    </h3>
+                    <ul style="margin: 0; padding-left: 1.5rem; color: var(--text-secondary); font-size: 0.9rem; line-height: 1.8;">
+                        <li>Life Insurance Premium</li>
+                        <li>Deposit Pension Scheme (DPS)</li>
+                        <li>Provident Fund Contributions</li>
+                        <li>Savings Certificates (Sanchayapatra)</li>
+                        <li>Stock Market (Listed Securities)</li>
+                        <li>Treasury Bonds</li>
+                        <li>Zakat Fund & Approved Pension Schemes</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Calculate Button -->
+            <div class="panel-section">
+                <button class="btn-primary" id="calculate-btn" style="width: 100%; font-size: 1.1rem; padding: 1rem;">
+                    Calculate Tax
+                </button>
+            </div>
+
+            <!-- Results Section -->
+            <div class="panel-section hidden" id="results-section">
+                <h2 class="mb-3">Tax Calculation Results</h2>
+
+                <!-- Summary Stats -->
+                <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                    <div class="stat-item">
+                        <div class="stat-value" id="total-income-display">৳0</div>
+                        <div class="stat-label">Total Income</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="taxable-income-display">৳0</div>
+                        <div class="stat-label">Taxable Income</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="tax-before-rebate-display">৳0</div>
+                        <div class="stat-label">Tax Before Rebate</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="final-tax-display" style="color: var(--primary-color); font-size: 2rem;">৳0</div>
+                        <div class="stat-label">Final Tax Payable</div>
+                    </div>
+                </div>
+
+                <!-- Detailed Breakdown -->
+                <div class="mt-4">
+                    <h3 class="mb-2">Detailed Breakdown</h3>
+                    <div id="breakdown-details" style="background: var(--card-bg); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                        <!-- Breakdown will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Investment Recommendation -->
+                <div class="mt-4 hidden" id="investment-recommendation">
+                    <div style="background: #fff3cd; color: #856404; padding: 1rem; border-radius: 8px; border: 1px solid #ffeeba;">
+                        <h3 style="margin: 0 0 0.5rem 0; color: #856404;">💡 Tax Saving Tip</h3>
+                        <p id="recommendation-text" style="margin: 0;"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <section class="features-section">
+            <h2>Calculator Features</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+                    </svg>
+                    <h3>AY 2025-26 Compliant</h3>
+                    <p>Updated with latest NBR tax slabs and regulations for Assessment Year 2025-26</p>
+                </div>
+                <div class="feature">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                    <h3>Accurate Calculations</h3>
+                    <p>Progressive tax slabs, consolidated salary exemption (BDT 500k), and investment rebate rules</p>
+                </div>
+                <div class="feature">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+                    </svg>
+                    <h3>Privacy Focused</h3>
+                    <p>All calculations performed in your browser. No data sent to any server.</p>
+                </div>
+                <div class="feature">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                    </svg>
+                    <h3>Regional Minimum Tax</h3>
+                    <p>Automatically applies correct minimum tax based on your location</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Disclaimer -->
+        <div style="max-width: 900px; margin: 2rem auto; padding: 1rem; background: var(--card-bg); border-radius: 8px; border: 1px solid var(--border-color); text-align: center;">
+            <p style="margin: 0; color: var(--text-secondary); font-size: 0.9rem;">
+                <strong>Disclaimer:</strong> This calculator provides estimates based on NBR guidelines for general individual taxpayers.
+                For complex tax situations, business expenses, or official tax filing, please consult a qualified tax professional or chartered accountant.
+            </p>
+        </div>
+
+        <!-- Footer -->
+        <footer class="site-footer">
+            <div class="footer-content">
+                <a href="https://github.com" target="_blank" style="color: var(--text-secondary); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.207 11.387.6.11.82-.26.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.085 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.93 0-1.31.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.217.694.824.576C20.565 21.795 24 17.297 24 12 24 5.37 18.627 0 12 0z"/></svg>
+                    <span>View on GitHub</span>
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="bd-tax-calculator.js"></script>
+    <script type="module" src="theme.js"></script>
+    <script type="module" src="wardrobe-menu.js"></script>
+</body>
+</html>

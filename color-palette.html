@@ -407,6 +407,117 @@
             background: var(--hover-bg);
         }
 
+        /* Heatmap Styles */
+        .comparison-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .comparison-side {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .comparison-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            text-align: center;
+        }
+
+        .section-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .heatmap-wrapper {
+            position: relative;
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            background: #f0f0f0;
+        }
+
+        #heatmap-canvas,
+        #reference-canvas,
+        #heatmap-overlay {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        #heatmap-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .heatmap-info {
+            margin-top: 1rem;
+            transition: opacity 0.3s ease;
+        }
+
+        .heatmap-info.hidden {
+            display: none;
+        }
+
+        .heatmap-legend {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: var(--shadow);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .legend-color {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .legend-text {
+            flex: 1;
+        }
+
+        .legend-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .legend-value {
+            font-family: 'Courier New', monospace;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .legend-coverage {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .legend-coverage span {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
         /* Mobile Responsive Styles */
         @media (max-width: 768px) {
             .palette-container {
@@ -415,6 +526,15 @@
 
             .upload-section {
                 padding: 1.5rem 1rem;
+            }
+
+            .comparison-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .comparison-label {
+                font-size: 0.95rem;
             }
 
             /* Ensure "Upload Image" heading is centered */
@@ -663,6 +783,42 @@
                     <h2>Extracted Palette</h2>
                     <div class="palette-grid" id="palette-grid">
                         <!-- Color cards will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Spatial Color Map (Heatmap) -->
+                <div class="export-section">
+                    <h2>Color Spatial Map</h2>
+                    <p class="section-description">Click on a color above to see where it appears in your image</p>
+
+                    <div class="comparison-container">
+                        <div class="comparison-side">
+                            <h3 class="comparison-label">Original Image</h3>
+                            <div class="heatmap-wrapper">
+                                <canvas id="reference-canvas"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="comparison-side">
+                            <h3 class="comparison-label">Color Location Map</h3>
+                            <div class="heatmap-wrapper">
+                                <canvas id="heatmap-canvas"></canvas>
+                                <canvas id="heatmap-overlay"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="heatmap-info" class="heatmap-info hidden">
+                        <div class="heatmap-legend">
+                            <div class="legend-item">
+                                <div class="legend-color" id="selected-color-preview"></div>
+                                <div class="legend-text">
+                                    <div class="legend-title" id="selected-color-name">Select a color</div>
+                                    <div class="legend-value" id="selected-color-hex">#000000</div>
+                                    <div class="legend-coverage">Coverage: <span id="selected-color-coverage">0%</span> of image</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
