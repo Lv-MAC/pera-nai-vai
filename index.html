@@ -25,9 +25,34 @@
     <!-- Canonical URL -->
     <link rel="canonical" href="https://pera-nai-vai.vercel.app/">
 
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#dc2626">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Pera nai Vai">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" sizes="72x72" href="/icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="96x96" href="/icon-96x96.png">
+    <link rel="apple-touch-icon" sizes="128x128" href="/icon-128x128.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="384x384" href="/icon-384x384.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="/icon-512x512.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/icon-72x72.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icon-72x72.png">
+
     <!-- Preload critical CSS -->
     <link rel="preload" href="tools.css?v=1.0.0" as="style">
     <link rel="stylesheet" href="tools.css?v=1.0.0">
+    <link rel="stylesheet" href="pwa-update.css?v=1.0.0">
 
     <!-- DNS prefetch for external resources (if any) -->
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
@@ -473,5 +498,6 @@
     <script type="module" src="theme.js"></script>
     <script type="module" src="category-filter.js"></script>
     <script type="module" src="donate.js"></script>
+    <script src="sw-register.js"></script>
 </body>
 </html>

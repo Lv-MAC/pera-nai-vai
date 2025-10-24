@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA Icon Generator - Pera nai Vai</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .container {
+            background: white;
+            border-radius: 24px;
+            padding: 3rem;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        .preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: #f9fafb;
+            border-radius: 16px;
+        }
+
+        .icon-preview {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .icon-preview canvas {
+            border-radius: 20%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .icon-size {
+            font-size: 0.875rem;
+            color: #6b7280;
+            font-weight: 600;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(220, 38, 38, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .instructions {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+
+        .instructions h3 {
+            color: #92400e;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .instructions p {
+            color: #78350f;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        .success-message {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-message p {
+            color: #065f46;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 PWA Icon Generator</h1>
+        <p class="subtitle">Generate all PWA icons for Pera nai Vai in one click!</p>
+
+        <div class="instructions">
+            <h3>📋 Instructions</h3>
+            <p>Click the button below to generate all required PWA icons. Each icon will be downloaded automatically to your Downloads folder. Save all icons in the project's public folder or root directory.</p>
+        </div>
+
+        <div class="preview" id="preview">
+            <!-- Icons will be displayed here -->
+        </div>
+
+        <div class="success-message" id="success">
+            <p>✓ All icons generated! Check your Downloads folder.</p>
+        </div>
+
+        <button class="btn" id="generateBtn" onclick="generateAllIcons()">
+            Generate All Icons
+        </button>
+    </div>
+
+    <script>
+        const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+        const previewContainer = document.getElementById('preview');
+
+        // Create preview canvases
+        sizes.forEach(size => {
+            const div = document.createElement('div');
+            div.className = 'icon-preview';
+
+            const canvas = document.createElement('canvas');
+            const displaySize = Math.min(size, 96);
+            canvas.width = size;
+            canvas.height = size;
+            canvas.style.width = displaySize + 'px';
+            canvas.style.height = displaySize + 'px';
+            canvas.id = `icon-${size}`;
+
+            const label = document.createElement('div');
+            label.className = 'icon-size';
+            label.textContent = `${size}×${size}`;
+
+            div.appendChild(canvas);
+            div.appendChild(label);
+            previewContainer.appendChild(div);
+
+            // Draw preview
+            drawIcon(canvas, size);
+        });
+
+        function drawIcon(canvas, size) {
+            const ctx = canvas.getContext('2d');
+            const center = size / 2;
+
+            // Background gradient (red gradient)
+            const bgGradient = ctx.createLinearGradient(0, 0, size, size);
+            bgGradient.addColorStop(0, '#dc2626');
+            bgGradient.addColorStop(1, '#991b1b');
+            ctx.fillStyle = bgGradient;
+            ctx.fillRect(0, 0, size, size);
+
+            // Problem solver icon in black
+            ctx.fillStyle = '#000000';
+            ctx.strokeStyle = '#000000';
+            ctx.save();
+
+            // Draw lightbulb (classic problem-solving symbol)
+            const bulbRadius = size * 0.12;
+            const bulbTop = center - size * 0.15;
+
+            // Bulb top (rounded part)
+            ctx.beginPath();
+            ctx.arc(center, bulbTop, bulbRadius, Math.PI, 0, false);
+            ctx.lineTo(center + bulbRadius, bulbTop + bulbRadius * 0.6);
+            ctx.lineTo(center - bulbRadius, bulbTop + bulbRadius * 0.6);
+            ctx.closePath();
+            ctx.fill();
+
+            // Filament inside bulb (creative spark)
+            ctx.strokeStyle = 'rgba(220, 38, 38, 0.8)';
+            ctx.lineWidth = size * 0.01;
+            ctx.beginPath();
+            ctx.moveTo(center, bulbTop - bulbRadius * 0.3);
+            ctx.lineTo(center - bulbRadius * 0.3, bulbTop + bulbRadius * 0.2);
+            ctx.moveTo(center, bulbTop - bulbRadius * 0.3);
+            ctx.lineTo(center + bulbRadius * 0.3, bulbTop + bulbRadius * 0.2);
+            ctx.stroke();
+
+            // Base of bulb
+            ctx.fillStyle = '#000000';
+            const baseHeight = size * 0.035;
+            const baseWidth = size * 0.08;
+            ctx.fillRect(center - baseWidth / 2, bulbTop + bulbRadius * 0.6, baseWidth, baseHeight);
+            ctx.fillRect(center - baseWidth / 2, bulbTop + bulbRadius * 0.6 + baseHeight, baseWidth, baseHeight * 0.7);
+
+            // Wrench tool (problem solver)
+            const wrenchScale = size * 0.008;
+            ctx.save();
+            ctx.translate(center - size * 0.18, center + size * 0.15);
+            ctx.rotate(-Math.PI / 6);
+
+            // Wrench handle
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(-wrenchScale * 1.5, -wrenchScale * 8, wrenchScale * 3, wrenchScale * 12);
+
+            // Wrench head
+            ctx.beginPath();
+            ctx.arc(0, -wrenchScale * 8, wrenchScale * 4, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = '#dc2626';
+            ctx.beginPath();
+            ctx.arc(0, -wrenchScale * 8, wrenchScale * 2, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.restore();
+
+            // Gear (tools/settings)
+            const gearRadius = size * 0.08;
+            const gearX = center + size * 0.18;
+            const gearY = center + size * 0.15;
+            const teeth = 8;
+
+            ctx.fillStyle = '#000000';
+            ctx.beginPath();
+            for (let i = 0; i < teeth; i++) {
+                const angle = (i * 2 * Math.PI) / teeth;
+                const nextAngle = ((i + 1) * 2 * Math.PI) / teeth;
+
+                const outerRadius = gearRadius * 1.2;
+                const innerRadius = gearRadius * 0.9;
+
+                const x1 = gearX + Math.cos(angle) * outerRadius;
+                const y1 = gearY + Math.sin(angle) * outerRadius;
+                const x2 = gearX + Math.cos(angle + Math.PI / teeth * 0.4) * outerRadius;
+                const y2 = gearY + Math.sin(angle + Math.PI / teeth * 0.4) * outerRadius;
+                const x3 = gearX + Math.cos(angle + Math.PI / teeth * 0.6) * innerRadius;
+                const y3 = gearY + Math.sin(angle + Math.PI / teeth * 0.6) * innerRadius;
+                const x4 = gearX + Math.cos(nextAngle - Math.PI / teeth * 0.6) * innerRadius;
+                const y4 = gearY + Math.sin(nextAngle - Math.PI / teeth * 0.6) * innerRadius;
+
+                if (i === 0) ctx.moveTo(x1, y1);
+                ctx.lineTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.lineTo(x3, y3);
+                ctx.lineTo(x4, y4);
+            }
+            ctx.closePath();
+            ctx.fill();
+
+            // Gear center hole
+            ctx.fillStyle = '#dc2626';
+            ctx.beginPath();
+            ctx.arc(gearX, gearY, gearRadius * 0.35, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Checkmark (solution/success)
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = size * 0.025;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            const checkScale = size * 0.08;
+            const checkX = center;
+            const checkY = center + size * 0.03;
+
+            ctx.beginPath();
+            ctx.moveTo(checkX - checkScale, checkY);
+            ctx.lineTo(checkX - checkScale * 0.3, checkY + checkScale * 0.8);
+            ctx.lineTo(checkX + checkScale * 1.2, checkY - checkScale * 0.8);
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
+        async function generateAllIcons() {
+            const btn = document.getElementById('generateBtn');
+            btn.disabled = true;
+            btn.textContent = 'Generating...';
+
+            for (let i = 0; i < sizes.length; i++) {
+                const size = sizes[i];
+                const canvas = document.getElementById(`icon-${size}`);
+
+                // Create download link
+                canvas.toBlob((blob) => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `icon-${size}x${size}.png`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 'image/png');
+
+                // Small delay between downloads
+                await new Promise(resolve => setTimeout(resolve, 300));
+            }
+
+            // Show success message
+            document.getElementById('success').classList.add('show');
+
+            btn.disabled = false;
+            btn.textContent = '✓ Icons Generated! Generate Again?';
+
+            // Hide success message after 5 seconds
+            setTimeout(() => {
+                document.getElementById('success').classList.remove('show');
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
