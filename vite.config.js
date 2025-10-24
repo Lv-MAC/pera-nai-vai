@@ -44,6 +44,7 @@ export default defineConfig({
           'icon-128x128.png',
           'icon-144x144.png',
           'icon-152x152.png',
+          'icon-167x167.png',
           'icon-192x192.png',
           'icon-384x384.png',
           'icon-512x512.png',
