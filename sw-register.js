@@ -7,7 +7,7 @@ let newWorker = null;
 // Configuration
 const PWA_CONFIG = {
   showInstallPrompt: true,
-  installPromptDelay: 30000, // Show install prompt after 30 seconds
+  installPromptDelay: 10000, // Show install prompt after 10 seconds
   showUpdateNotification: true,
   autoUpdateDelay: 5000, // Auto-update after 5 seconds if user doesn't interact
   enableOfflineIndicator: true
