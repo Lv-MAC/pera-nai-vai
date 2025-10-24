@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
+import { copyFileSync, mkdirSync, existsSync } from 'fs'
 
 export default defineConfig({
   build: {
@@ -21,4 +22,44 @@ export default defineConfig({
       },
     },
   },
+  plugins: [
+    {
+      name: 'copy-pwa-files',
+      closeBundle() {
+        const distDir = resolve(__dirname, 'dist');
+
+        // Ensure dist directory exists
+        if (!existsSync(distDir)) {
+          mkdirSync(distDir, { recursive: true });
+        }
+
+        // Copy PWA files
+        const filesToCopy = [
+          'manifest.json',
+          'sw.js',
+          'sw-register.js',
+          'pwa-update.css',
+          'icon-72x72.png',
+          'icon-96x96.png',
+          'icon-128x128.png',
+          'icon-144x144.png',
+          'icon-152x152.png',
+          'icon-192x192.png',
+          'icon-384x384.png',
+          'icon-512x512.png',
+        ];
+
+        filesToCopy.forEach(file => {
+          const src = resolve(__dirname, file);
+          const dest = resolve(distDir, file);
+          try {
+            copyFileSync(src, dest);
+            console.log(`Copied ${file} to dist/`);
+          } catch (err) {
+            console.warn(`Warning: Could not copy ${file}:`, err.message);
+          }
+        });
+      }
+    }
+  ]
 })
