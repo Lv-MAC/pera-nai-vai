@@ -18,6 +18,7 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     registerServiceWorker();
     setupInstallPrompt();
+    setupPermanentInstallButton();
     setupOfflineDetection();
   });
 }
@@ -157,7 +158,13 @@ function setupInstallPrompt() {
     deferredInstallPrompt = e;
     console.log('[PWA] Install prompt captured');
 
-    // Don't show if already dismissed
+    // Show header install button
+    const installBtn = document.getElementById('pwa-install-btn');
+    if (installBtn) {
+      installBtn.style.display = 'flex';
+    }
+
+    // Don't show popup if already dismissed
     if (localStorage.getItem('pwa-install-dismissed')) {
       return;
     }
@@ -281,6 +288,52 @@ window.dismissInstallPrompt = function() {
   const dismissUntil = Date.now() + (7 * 24 * 60 * 60 * 1000);
   localStorage.setItem('pwa-install-dismissed', dismissUntil.toString());
 };
+
+// Setup permanent install button in header
+function setupPermanentInstallButton() {
+  const installBtn = document.getElementById('pwa-install-btn');
+  if (!installBtn) return;
+
+  // Don't show if already installed
+  if (window.matchMedia('(display-mode: standalone)').matches) {
+    installBtn.style.display = 'none';
+    return;
+  }
+
+  // Show button when install prompt is available
+  window.addEventListener('beforeinstallprompt', (e) => {
+    // Button will be shown when deferredInstallPrompt is set
+    if (deferredInstallPrompt) {
+      installBtn.style.display = 'flex';
+    }
+  });
+
+  // Hide button after installation
+  window.addEventListener('appinstalled', () => {
+    installBtn.style.display = 'none';
+  });
+
+  // Handle button click
+  installBtn.addEventListener('click', async () => {
+    if (!deferredInstallPrompt) {
+      console.log('[PWA] Install prompt not available');
+      return;
+    }
+
+    // Show native install prompt
+    deferredInstallPrompt.prompt();
+
+    // Wait for user choice
+    const { outcome } = await deferredInstallPrompt.userChoice;
+    console.log('[PWA] Install outcome:', outcome);
+
+    if (outcome === 'accepted') {
+      installBtn.style.display = 'none';
+    }
+
+    deferredInstallPrompt = null;
+  });
+}
 
 // Setup offline detection
 function setupOfflineDetection() {
